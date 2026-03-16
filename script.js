@@ -1,17 +1,21 @@
-const revealElements = document.querySelectorAll(".reveal")
+document.addEventListener("DOMContentLoaded", function () {
 
-const observer = new IntersectionObserver(entries => {
+const revealElements = document.querySelectorAll(".reveal");
 
-entries.forEach(entry => {
+const observer = new IntersectionObserver((entries) => {
 
-if(entry.isIntersecting){
-entry.target.classList.add("active")
+entries.forEach((entry) => {
+
+if (entry.isIntersecting) {
+entry.target.classList.add("active");
 }
 
-})
+});
 
-})
+});
 
-revealElements.forEach(el => {
-observer.observe(el)
-})
+revealElements.forEach((el) => {
+observer.observe(el);
+});
+
+});
