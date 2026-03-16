@@ -1,0 +1,66 @@
+body{
+font-family: 'Inter', sans-serif;
+background:#0b0b0b;
+color:#fff;
+margin:0;
+}
+
+.nav{
+display:flex;
+justify-content:space-between;
+padding:30px 80px;
+}
+
+.nav a{
+color:#aaa;
+margin-left:20px;
+text-decoration:none;
+}
+
+.hero{
+padding:160px 80px;
+max-width:900px;
+}
+
+.hero-title{
+font-size:64px;
+line-height:1.1;
+}
+
+.hero-sub{
+margin-top:20px;
+color:#999;
+font-size:18px;
+}
+
+.work{
+padding:120px 80px;
+}
+
+.project{
+margin-bottom:100px;
+cursor:pointer;
+transition:0.4s;
+}
+
+.project:hover{
+transform:translateY(-5px);
+}
+
+.project h2{
+font-size:40px;
+margin-bottom:10px;
+}
+
+.project p{
+color:#999;
+}
+
+.about{
+padding:120px 80px;
+max-width:700px;
+}
+
+.contact{
+padding:120px 80px;
+}
