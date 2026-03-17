@@ -93,37 +93,136 @@ body{font-family:Inter;background:#f6f7fb;color:#111}
   </div>
 </div>
 
-<!-- CHATBOT -->
-<div class="chat-btn" onclick="toggleChat()">💬</div>
+<!-- SHYANI BOT 2.0 -->
 
-<div class="chat-box" id="chat">
-  <div class="chat-head">Shyani Bot ✨</div>
-  <div class="chat-body" id="chatBody">
-    Hi, I'm Shyani 👋<br><br>
+<style>
+.bot-toggle{
+position:fixed;bottom:20px;right:20px;
+width:60px;height:60px;border-radius:50%;
+background:linear-gradient(135deg,#6f5cff,#9b8cff);
+color:#fff;font-size:24px;
+display:flex;align-items:center;justify-content:center;
+cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.2);
+transition:.3s;
+z-index:999;
+}
+.bot-toggle:hover{transform:scale(1.1)}
 
-    <button onclick="reply('work')">View Work</button>
-    <button onclick="reply('about')">About Me</button>
-    <button onclick="reply('hire')">Hire Me</button>
+.bot{
+position:fixed;bottom:90px;right:20px;
+width:320px;
+background:rgba(255,255,255,0.7);
+backdrop-filter:blur(12px);
+border-radius:18px;
+box-shadow:0 20px 60px rgba(0,0,0,.2);
+overflow:hidden;
+display:none;
+animation:fadeUp .4s ease;
+z-index:999;
+}
+
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+.bot-header{
+padding:14px;
+font-weight:600;
+background:linear-gradient(135deg,#6f5cff,#9b8cff);
+color:#fff;
+}
+
+.bot-body{
+padding:14px;
+font-size:14px;
+max-height:300px;
+overflow:auto;
+}
+
+.msg{
+background:#fff;
+padding:10px 12px;
+border-radius:12px;
+margin-bottom:10px;
+width:fit-content;
+max-width:80%;
+box-shadow:0 5px 15px rgba(0,0,0,.05);
+}
+
+.user{
+background:#6f5cff;
+color:#fff;
+margin-left:auto;
+}
+
+.options button{
+width:100%;
+margin-top:6px;
+padding:10px;
+border:none;
+border-radius:10px;
+background:#eef0ff;
+cursor:pointer;
+transition:.2s;
+}
+.options button:hover{background:#dde0ff}
+</style>
+
+<div class="bot-toggle" onclick="toggleBot()">💬</div>
+
+<div class="bot" id="bot">
+  <div class="bot-header">Shyani Bot ✨</div>
+
+  <div class="bot-body" id="chat">
+
+    <div class="msg">
+      Hey 👋 I'm Shyani.<br>
+      Curious about my work?
+    </div>
+
+    <div class="options">
+      <button onclick="send('work')">View Work</button>
+      <button onclick="send('about')">About Me</button>
+      <button onclick="send('hire')">Hire Me</button>
+      <button onclick="send('fun')">Fun Fact 😄</button>
+    </div>
+
   </div>
 </div>
 
 <script>
-function toggleChat(){
-let c=document.getElementById("chat");
-c.style.display=c.style.display==="block"?"none":"block";
+function toggleBot(){
+let b=document.getElementById("bot");
+b.style.display=b.style.display==="block"?"none":"block";
 }
 
-function reply(type){
-let text="";
-if(type==="work") text="Scroll up to see my projects 👆";
-if(type==="about") text="4+ years in fintech, SaaS & mobility 🚗";
-if(type==="hire") text="Email me: shyanipal06@gmail.com ✨";
+function send(type){
 
-let msg=document.createElement("p");
-msg.innerText=text;
-document.getElementById("chatBody").appendChild(msg);
+let chat=document.getElementById("chat");
+
+/* user bubble */
+let user=document.createElement("div");
+user.className="msg user";
+user.innerText=type;
+chat.appendChild(user);
+
+/* bot reply */
+let reply="";
+
+if(type==="work") reply="You can explore my case studies just above 👆";
+if(type==="about") reply="I'm a Product Designer with 4+ years in fintech, SaaS & mobility 🚗";
+if(type==="hire") reply="Let’s build something amazing → shyanipal06@gmail.com ✨";
+if(type==="fun") reply="Fun fact: I mix product thinking + storytelling in everything I design 😄";
+
+setTimeout(()=>{
+let bot=document.createElement("div");
+bot.className="msg";
+bot.innerText=reply;
+chat.appendChild(bot);
+chat.scrollTop=chat.scrollHeight;
+},400);
+
 }
 </script>
-
-</body>
 </html>
