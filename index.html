@@ -19,8 +19,38 @@
   --rule:      #e0ddd7;
   --white:     #ffffff;
 }
-
 html { scroll-behavior: smooth; }
+  <!-- SHYANI BOT -->
+
+<div class="chatbot">
+
+  <div class="chatbot-toggle" onclick="toggleChat()">
+    💬
+  </div>
+
+  <div class="chatbot-window" id="chatWindow">
+
+    <div class="chat-header">
+      Shyani Bot ✨
+    </div>
+
+    <div class="chat-body" id="chatBody">
+      <div class="bot-message">
+        Hi, I’m Shyani 👋<br>
+        Want to explore my work?
+      </div>
+
+      <div class="chat-options">
+        <button onclick="reply('work')">View Work</button>
+        <button onclick="reply('about')">About Me</button>
+        <button onclick="reply('hire')">Hire Me</button>
+        <button onclick="reply('fun')">Fun Fact 😄</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
 body {
   background: var(--paper);
   color: var(--ink);
