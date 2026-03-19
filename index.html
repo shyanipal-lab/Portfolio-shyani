@@ -2,1068 +2,1335 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Shyani Pal — Product Designer</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --Y:#FFD02F;--N:#050038;--B:#4262FF;
+  --bg:#F8F7F4;--W:#FFFFFF;--brd:#E5E2DC;
+  --ink:#0F0F1A;--mid:#5E5A70;--soft:#A09AAA;
+  --r:14px;--rlg:22px;
+  --glass:rgba(255,255,255,.14);--glass-brd:rgba(255,255,255,.22)
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none}
 
-:root {
-  --ink:       #0f0f0f;
-  --paper:     #f5f3ef;
-  --blush:     #f9eeeb;
-  --rose:      #e8b8b2;
-  --deep-rose: #c97a78;
-  --rose-soft: #fdf0ee;
-  --mid:       #6b6b6b;
-  --rule:      #e0ddd7;
+/* ─── CUSTOM CURSOR ─── */
+#cur{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;will-change:transform}
+#cur svg{width:20px;height:20px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.28))}
+#curtag{position:absolute;top:16px;left:16px;font-size:11px;font-weight:500;padding:4px 10px;border-radius:0 8px 8px 8px;white-space:nowrap;letter-spacing:.02em;box-shadow:0 3px 14px rgba(0,0,0,.18);transition:background .4s,color .4s}
+.ct-hero{background:var(--N);color:var(--Y)}
+.ct-about{background:var(--Y);color:var(--N)}
+.ct-work{background:var(--B);color:#fff}
+.ct-games{background:#FF6B6B;color:#fff}
+.ct-contact{background:#3CBF71;color:#fff}
+a,button,[onclick],input,textarea,select{cursor:none!important}
+
+/* ─── PROGRESS ─── */
+#prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--Y),var(--B));z-index:600;width:0;border-radius:0 2px 2px 0}
+
+/* ─── PAGES ─── */
+.page,.cs-page,.games-page{display:none}
+.page.on,.cs-page.on,.games-page.on{display:block}
+
+/* ═══════════════════════════════════════════════
+   GOOEY FLOATING NAV
+═══════════════════════════════════════════════ */
+.float-nav{
+  position:fixed;top:18px;left:50%;transform:translateX(-50%);
+  z-index:500;
+  /* gooey filter container */
+  filter:url(#goo);
+}
+.float-nav-inner{
+  display:flex;align-items:center;gap:2px;
+  background:rgba(5,0,56,.72);
+  backdrop-filter:blur(20px) saturate(1.6);
+  -webkit-backdrop-filter:blur(20px) saturate(1.6);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:50px;
+  padding:6px 8px;
+  position:relative;
+  box-shadow:0 8px 32px rgba(5,0,56,.35),inset 0 1px 0 rgba(255,255,255,.1);
+}
+/* gooey blob that slides */
+.nav-blob{
+  position:absolute;
+  height:calc(100% - 12px);
+  background:rgba(255,208,47,.18);
+  border-radius:50px;
+  top:6px;
+  left:8px;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1),width .4s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;
+}
+.nav-logo-btn{
+  font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.08em;
+  color:rgba(255,255,255,.9);background:none;border:none;
+  padding:6px 14px;border-radius:40px;white-space:nowrap;
+  display:flex;align-items:center;gap:6px;
+}
+.nav-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--Y)}
+.nav-link{
+  font-size:12px;font-weight:400;color:rgba(255,255,255,.55);
+  background:none;border:none;
+  padding:7px 14px;border-radius:40px;
+  white-space:nowrap;letter-spacing:.02em;
+  position:relative;z-index:1;transition:color .25s;
+}
+.nav-link:hover,.nav-link.active{color:rgba(255,255,255,.95)}
+.nav-cta-btn{
+  background:var(--Y);color:var(--N);
+  font-size:12px;font-weight:500;
+  padding:7px 16px;border-radius:40px;border:none;
+  white-space:nowrap;letter-spacing:.02em;
+  transition:opacity .15s,transform .15s;
+  position:relative;z-index:1;
+}
+.nav-cta-btn:hover{opacity:.88;transform:scale(1.03)}
+
+/* mobile ham inside float nav */
+.nav-ham{display:none;flex-direction:column;gap:4px;background:none;border:none;padding:8px 10px}
+.nav-ham span{display:block;width:18px;height:1.5px;background:rgba(255,255,255,.7);border-radius:2px}
+/* drawer */
+.drawer{display:none;position:fixed;inset:0;background:rgba(5,0,56,.96);backdrop-filter:blur(16px);flex-direction:column;align-items:center;justify-content:center;gap:28px;z-index:490}
+.drawer.on{display:flex}
+.drawer a{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:.04em;color:rgba(255,255,255,.85);text-decoration:none;transition:color .2s;opacity:0;animation:fadeUp .4s forwards}
+.drawer a:nth-child(1){animation-delay:.04s}.drawer a:nth-child(2){animation-delay:.09s}.drawer a:nth-child(3){animation-delay:.14s}.drawer a:nth-child(4){animation-delay:.19s}.drawer a:nth-child(5){animation-delay:.24s}
+.drawer a:hover{color:var(--Y)}
+
+/* SVG filter for gooey */
+.svg-filters{position:absolute;width:0;height:0;overflow:hidden}
+
+/* ═══════════════════════════════════════════════
+   HERO — CINEMATIC INTRO (hero-intro.learnframer.site style)
+   Two side columns of floating images slide in,
+   headline and CTA animate from center
+═══════════════════════════════════════════════ */
+#hero{
+  height:100vh;width:100vw;
+  background:var(--N);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
 }
 
-html { scroll-behavior: smooth; }
-body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  overflow-x: hidden;
-  cursor: none;
+/* dot grid */
+#hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:24px 24px;pointer-events:none;z-index:0;
+  animation:gridDrift 24s linear infinite;
+}
+@keyframes gridDrift{0%{background-position:0 0}100%{background-position:24px 24px}}
+
+/* ambient orbs */
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+.orb1{width:600px;height:600px;background:var(--B);opacity:.18;top:-200px;left:-200px;animation:orbFloat 12s ease-in-out infinite}
+.orb2{width:500px;height:500px;background:var(--Y);opacity:.1;bottom:-100px;right:-100px;animation:orbFloat 10s ease-in-out infinite;animation-delay:-5s}
+@keyframes orbFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-40px) scale(1.06)}}
+
+/* ── LEFT IMAGE COLUMN ── */
+.hero-col{
+  position:absolute;top:0;bottom:0;
+  display:flex;flex-direction:column;gap:14px;
+  padding:80px 0;
+  z-index:1;
+  width:220px;
+}
+.hero-col-l{
+  left:0;
+  transform:translateX(-100%);
+  animation:slideInLeft 1.2s cubic-bezier(.76,0,.24,1) .1s forwards;
+}
+.hero-col-r{
+  right:0;
+  transform:translateX(100%);
+  animation:slideInRight 1.2s cubic-bezier(.76,0,.24,1) .1s forwards;
+}
+@keyframes slideInLeft{to{transform:translateX(0)}}
+@keyframes slideInRight{to{transform:translateX(0)}}
+
+/* individual image/slot cards */
+.hcard{
+  width:100%;border-radius:16px;overflow:hidden;
+  flex-shrink:0;position:relative;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);
+  /* hover lift */
+  transition:transform .4s ease,box-shadow .4s ease;
+}
+.hcard:hover{transform:scale(1.03) translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+/* staggered vertical float */
+.hcard:nth-child(1){animation:cardFloat1 5s ease-in-out infinite}
+.hcard:nth-child(2){animation:cardFloat2 6s ease-in-out infinite}
+.hcard:nth-child(3){animation:cardFloat3 4.5s ease-in-out infinite}
+.hcard:nth-child(4){animation:cardFloat1 5.5s ease-in-out infinite}
+@keyframes cardFloat1{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes cardFloat2{0%,100%{transform:translateY(-6px)}50%{transform:translateY(8px)}}
+@keyframes cardFloat3{0%,100%{transform:translateY(4px)}50%{transform:translateY(-8px)}}
+@keyframes cardFloat4{0%,100%{transform:translateY(-4px)}50%{transform:translateY(10px)}}
+
+/* Lottie / JSON placeholder inside hcard */
+.lottie-slot{
+  width:100%;
+  background:rgba(255,255,255,.04);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+/* placeholder label */
+.slot-label{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(5,0,56,.7);backdrop-filter:blur(8px);
+  padding:7px 10px;font-size:9px;letter-spacing:.08em;
+  color:rgba(255,255,255,.4);text-transform:uppercase;
+  font-weight:500;
+}
+/* illustration placeholder */
+.slot-placeholder{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;padding:16px;
+}
+.slot-icon{font-size:36px;opacity:.6}
+.slot-text{font-size:10px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.1em;text-align:center}
+.slot-dashed{
+  position:absolute;inset:8px;
+  border:1px dashed rgba(255,255,255,.12);
+  border-radius:10px;pointer-events:none;
 }
 
-/* ── DRUK-STYLE font util ── */
-.druk {
-  font-family: 'Bebas Neue', 'Arial Narrow', Arial, sans-serif;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 0.92;
-  text-transform: uppercase;
+/* ── CENTER CONTENT ── */
+.hero-center{
+  position:relative;z-index:2;
+  text-align:center;
+  max-width:580px;
+  padding:0 20px;
+}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+  border-radius:50px;padding:6px 14px;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);margin-bottom:28px;
+  opacity:0;animation:fadeUp .6s .5s forwards;
+}
+.hero-pip{width:6px;height:6px;border-radius:50%;background:#3CBF71;animation:pip 2s infinite}
+@keyframes pip{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+
+.hero-h{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(64px,10vw,120px);
+  line-height:.88;letter-spacing:-.01em;
+  color:#F5F2EE;
+  opacity:0;animation:fadeUp .8s .65s forwards;
+}
+.hero-h em{font-style:normal;color:var(--Y)}
+
+.hero-sub{
+  font-size:15px;color:rgba(255,255,255,.45);
+  line-height:1.7;margin:20px auto 32px;max-width:420px;
+  opacity:0;animation:fadeUp .7s .85s forwards;
 }
 
-/* ── CURSOR ── */
-#cd { width: 7px; height: 7px; background: var(--deep-rose); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
-#cr { width: 30px; height: 30px; border: 1.5px solid var(--rose); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all .18s ease; opacity: .7; }
-body:has(a:hover) #cr, body:has(button:hover) #cr, body:has(.proj-card:hover) #cr { transform: translate(-50%,-50%) scale(1.8); opacity: .25; }
-
-/* ── PROGRESS ── */
-#prog { position: fixed; top: 0; left: 0; height: 1px; background: var(--deep-rose); z-index: 300; width: 0; }
-
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 22px 48px;
-  mix-blend-mode: multiply;
+.hero-btns{
+  display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+  opacity:0;animation:fadeUp .7s 1s forwards;
 }
-.nav-logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 22px; letter-spacing: 0.04em;
-  text-decoration: none; color: var(--ink);
+.btn-y{
+  background:var(--Y);color:var(--N);font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:500;padding:11px 24px;border-radius:50px;
+  border:none;text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+  transition:opacity .15s,transform .15s;
 }
-.nav-links { display: flex; gap: 32px; list-style: none; }
-.nav-links a { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); text-decoration: none; transition: color .2s; }
-.nav-links a:hover { color: var(--ink); }
-.nav-tag { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); }
-
-/* ── PAGES ── */
-.page { display: none; }
-.page.active { display: block; }
-.cs-page { display: none; }
-.cs-page.active { display: block; }
-
-/* ════════════════════════════════════════
-   HERO — STACKED WORDS (champions4good ref)
-════════════════════════════════════════ */
-.hero {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  position: relative;
-  overflow: hidden;
-  border-bottom: 1px solid var(--rule);
+.btn-y:hover{opacity:.88;transform:translateY(-2px)}
+.btn-ghost-w{
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.75);
+  border:1px solid rgba(255,255,255,.16);font-family:'DM Sans',sans-serif;
+  font-size:13px;padding:10px 22px;border-radius:50px;text-decoration:none;
+  transition:background .2s,transform .15s;
 }
+.btn-ghost-w:hover{background:rgba(255,255,255,.14);transform:translateY(-2px)}
 
-/* Left half: stacked words */
-.hero-stack {
-  padding: 88px 0 60px 48px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-right: 1px solid var(--rule);
-  position: relative;
-  overflow: hidden;
+/* scroll hint */
+.scroll-cue{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  opacity:0;animation:fadeUp .6s 1.3s forwards;z-index:2;
+  color:rgba(255,255,255,.28);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
 }
-
-/* each word row */
-.stack-word {
-  font-family: 'Bebas Neue', 'Arial Narrow', Arial, sans-serif;
-  font-weight: 400;
-  text-transform: uppercase;
-  line-height: 0.88;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-  display: block;
-  position: relative;
-  overflow: hidden;
-  cursor: default;
-  user-select: none;
+.scroll-ring{
+  width:28px;height:28px;border:1px solid rgba(255,255,255,.18);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:12px;animation:scrollBounce 2s ease-in-out infinite;
 }
+@keyframes scrollBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
 
-/* alternate: solid fill / outline */
-.stack-word.fill   { color: var(--ink); }
-.stack-word.outline { color: transparent; -webkit-text-stroke: 2px var(--ink); }
-.stack-word.rose   { color: var(--deep-rose); }
-.stack-word.outline-rose { color: transparent; -webkit-text-stroke: 2px var(--deep-rose); }
+/* ═══ MARQUEE ═══ */
+.marquee-wrap{background:var(--Y);overflow:hidden}
+.marquee-track{display:flex;animation:marquee 22s linear infinite;width:max-content}
+.marquee-item{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.16em;color:rgba(5,0,56,.7);padding:12px 24px;display:flex;align-items:center;gap:20px;white-space:nowrap}
+.mdot{width:5px;height:5px;border-radius:50%;background:rgba(5,0,56,.3);flex-shrink:0}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* hover fill reveal */
-.stack-word .word-inner {
-  display: inline-block;
-  transition: transform 0.55s cubic-bezier(.76,0,.24,1),
-              color 0.3s ease,
-              -webkit-text-stroke 0.3s ease;
+/* ═══ SECTION SHARED ═══ */
+.sec{padding:88px 48px}
+.si{max-width:1100px;margin:0 auto}
+.slbl{font-size:11px;font-weight:500;color:var(--mid);letter-spacing:.14em;text-transform:uppercase;margin-bottom:32px;display:flex;align-items:center;gap:12px}
+.slbl::after{content:'';flex:1;height:1px;background:var(--brd)}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.rv.on{opacity:1;transform:none}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}.d3{transition-delay:.21s}.d4{transition-delay:.28s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ═══ STORY CARDS ═══ */
+.story-sec{background:var(--N);padding:72px 0}
+.story-inner{max-width:1100px;margin:0 auto;padding:0 48px}
+.story-scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin-top:28px}
+.story-scroll::-webkit-scrollbar{display:none}
+.scard{
+  flex-shrink:0;width:230px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:18px;padding:24px 20px;
+  transition:background .3s,transform .3s,border-color .3s;
 }
-.stack-word:hover .word-inner { transform: skewX(-4deg) translateX(6px); }
-.stack-word.outline:hover .word-inner { color: var(--ink); -webkit-text-stroke: 2px transparent; }
-.stack-word.outline-rose:hover .word-inner { color: var(--deep-rose); -webkit-text-stroke: 2px transparent; }
-
-/* fluid font-size: fill width */
-.stack-word { font-size: clamp(60px, 13vw, 160px); }
-
-/* size overrides for specific words */
-.sw-design  { font-size: clamp(56px, 11.5vw, 148px); }
-.sw-vibe    { font-size: clamp(78px, 15.5vw, 195px); }
-.sw-coder   { font-size: clamp(62px, 12.5vw, 158px); }
-.sw-only    { font-size: clamp(72px, 14.5vw, 182px); }
-.sw-ui      { font-size: clamp(90px, 19vw, 240px); }
-.sw-ux      { font-size: clamp(92px, 20vw, 252px); }
-
-/* divider lines between some words */
-.stack-rule { height: 1px; background: var(--rule); margin: 6px 0; }
-
-/* Right half: info + phones */
-.hero-right-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 88px 48px 60px;
+.scard:hover{background:rgba(255,255,255,.1);transform:translateY(-5px);border-color:rgba(255,208,47,.35)}
+/* LOTTIE SLOT inside story card */
+.scard-lottie{
+  width:100%;height:80px;
+  background:rgba(255,255,255,.05);border-radius:10px;
+  border:1px dashed rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:14px;font-size:28px;overflow:hidden;
+  position:relative;
 }
-.hero-meta { display: flex; flex-direction: column; gap: 0; }
-.hero-meta-row {
-  display: flex; justify-content: space-between; align-items: baseline;
-  padding: 14px 0; border-bottom: 1px solid var(--rule);
+.scard-num{font-family:'Bebas Neue',sans-serif;font-size:42px;color:rgba(255,208,47,.15);line-height:1;margin-bottom:6px}
+.scard-t{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.03em;color:#F5F2EE;margin-bottom:6px;line-height:1.05}
+.scard-txt{font-size:12px;color:rgba(255,255,255,.38);line-height:1.65}
+.scard-chip{display:inline-block;font-size:9px;background:rgba(255,208,47,.12);color:var(--Y);border-radius:50px;padding:3px 9px;margin-top:10px;letter-spacing:.06em}
+
+/* ═══ ABOUT ═══ */
+.about-sec{background:var(--W)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;margin-top:40px}
+.about-left{display:flex;flex-direction:column;gap:20px}
+.about-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,4.5vw,56px);line-height:.92;letter-spacing:.01em}
+.about-h em{font-style:normal;color:var(--B)}
+.about-bio{font-size:14px;color:var(--mid);line-height:1.8;max-width:400px}
+.about-humor{background:#FFFBF0;border:1.5px solid var(--Y);border-radius:var(--r);padding:14px 18px;font-size:13px;color:var(--ink);line-height:1.6;display:flex;gap:9px}
+.about-wchips{display:flex;flex-wrap:wrap;gap:7px;padding-top:12px;border-top:1px solid var(--brd)}
+.wlbl{font-size:10px;color:var(--soft);letter-spacing:.1em;text-transform:uppercase;align-self:center}
+.wchip{font-size:12px;font-weight:500;background:var(--Y);border-radius:6px;padding:4px 11px;color:var(--N)}
+.about-vals{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.av{background:var(--bg);border-radius:var(--r);border:1.5px solid var(--brd);padding:15px 17px;transition:border-color .2s,transform .2s}
+.av:hover{border-color:var(--Y);transform:translateY(-3px)}
+.av-t{font-size:13px;font-weight:500;margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.av-d{font-size:12px;color:var(--mid);line-height:1.55}
+
+/* about right — BIG LOTTIE/JSON SLOT */
+.about-right{position:relative}
+.about-lottie-main{
+  width:100%;aspect-ratio:4/3;
+  background:var(--N);border-radius:var(--rlg);
+  overflow:hidden;position:relative;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 32px 80px rgba(5,0,56,.2);
 }
-.hero-meta-row:first-child { border-top: 1px solid var(--rule); }
-.hm-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mid); }
-.hm-value { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 0.04em; }
-.hm-value.rose { color: var(--deep-rose); }
-
-.hero-tagline {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(28px, 4.5vw, 56px);
-  line-height: 0.95; letter-spacing: -0.01em;
-  margin: 40px 0 28px;
+.about-lottie-overlay{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  z-index:2;pointer-events:none;
 }
-.hero-bio {
-  font-size: 13px; color: var(--mid); line-height: 1.75; max-width: 380px;
-  margin-bottom: 32px;
+.about-lottie-overlay.hide{display:none}
+.alo-icon{font-size:48px;opacity:.3}
+.alo-text{font-size:12px;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.12em;text-align:center;max-width:200px;line-height:1.6}
+.alo-dashed{position:absolute;inset:16px;border:1px dashed rgba(255,255,255,.1);border-radius:14px;pointer-events:none}
+/* stat chips below */
+.about-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.astat{border-radius:var(--r);padding:14px 16px;text-align:center}
+.astat-n{font-family:'Bebas Neue',sans-serif;font-size:24px;line-height:1;margin-bottom:2px}
+.astat-l{font-size:10px;color:var(--mid)}
+
+/* ═══ WORK ═══ */
+.work-sec{background:var(--bg)}
+.yr-g{margin-bottom:36px}
+.yr-l{font-size:12px;font-weight:500;color:var(--mid);margin-bottom:13px;letter-spacing:.06em;display:flex;align-items:center;gap:12px}
+.yr-l::after{content:'';flex:1;height:1px;background:var(--brd)}
+.wgrid{display:flex;flex-direction:column;gap:12px}
+.wcard{
+  background:var(--W);border-radius:var(--rlg);border:1.5px solid var(--brd);
+  overflow:hidden;cursor:none;
+  display:grid;grid-template-columns:1fr auto;
+  transition:border-color .2s,box-shadow .2s,transform .22s;
 }
-.hero-cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
-.hero-cta {
-  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--ink); text-decoration: none;
-  border-bottom: 1px solid var(--ink); padding-bottom: 2px;
-  transition: color .2s, border-color .2s;
+.wcard:hover{border-color:var(--Y);box-shadow:0 14px 42px rgba(255,208,47,.13);transform:translateY(-3px)}
+.wcard.feat{grid-template-columns:1fr}
+.wc-l{padding:28px 32px;display:flex;flex-direction:column;gap:8px}
+.wc-cat{font-size:10px;font-weight:500;color:var(--B);letter-spacing:.1em;text-transform:uppercase}
+.wc-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(20px,2.2vw,30px);letter-spacing:.03em;line-height:1;color:var(--ink)}
+.wc-desc{font-size:13px;color:var(--mid);line-height:1.7;max-width:460px}
+.wc-tags{display:flex;flex-wrap:wrap;gap:5px}
+.wtag{font-size:10px;background:var(--bg);border-radius:50px;padding:3px 10px;color:var(--mid)}
+.wc-ft{display:flex;align-items:center;justify-content:space-between;margin-top:2px;flex-wrap:wrap;gap:8px}
+.wc-cta{font-size:12px;font-weight:500;color:var(--B);display:inline-flex;align-items:center;gap:4px;text-decoration:none;transition:gap .2s}
+.wcard:hover .wc-cta{gap:8px}
+.wc-kpi{font-size:12px;color:var(--soft)}
+.wc-kpi strong{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--ink);font-weight:400;vertical-align:middle;margin-right:3px}
+.wc-th{
+  width:190px;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  border-left:1.5px solid var(--brd);overflow:hidden;padding:16px;
+  transition:background .3s;
 }
-.hero-cta:hover { color: var(--deep-rose); border-color: var(--deep-rose); }
-.hero-cta.primary {
-  background: var(--ink); color: var(--paper);
-  padding: 10px 24px; border: none; border-radius: 0; letter-spacing: 0.14em;
+.wcard:hover .wc-th{background:#FFFBF0}
+.wcard.feat .wc-th{width:100%;height:220px;border-left:none;border-top:1.5px solid var(--brd);order:-1;background:var(--N)}
+
+/* ── WORK card LOTTIE slot ── */
+.wcard-lottie{
+  width:100px;height:195px;
+  background:var(--W);border-radius:14px;
+  border:1.5px solid var(--brd);overflow:hidden;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:5px;
+  position:relative;
 }
-.hero-cta.primary:hover { background: var(--deep-rose); color: #fff; border-color: transparent; }
+.wcard-lottie-ph{font-size:26px;opacity:.4}
+.wcard-lottie-lbl{font-size:9px;color:var(--mid);text-align:center;padding:0 6px;letter-spacing:.06em;text-transform:uppercase;opacity:.6}
+.wph-wrap{transform:translateY(10px);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.wcard:hover .wph-wrap{transform:translateY(4px)}
+.wcard.feat .wph-wrap{transform:translateY(-6px)}
+.wcard.feat:hover .wph-wrap{transform:translateY(-12px)}
 
-/* availability chip */
-.hero-avail {
-  display: inline-flex; align-items: center; gap: 8px; margin-top: 20px;
-  font-size: 11px; color: var(--mid); letter-spacing: 0.06em;
+/* ═══ SKILLS ═══ */
+.skills-sec{background:var(--W)}
+.sk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
+.sk-card{background:var(--bg);border-radius:var(--rlg);border:1.5px solid var(--brd);padding:28px 24px;transition:border-color .2s,transform .2s,box-shadow .2s}
+.sk-card:hover{border-color:var(--Y);transform:translateY(-4px);box-shadow:0 12px 32px rgba(255,208,47,.11)}
+/* LOTTIE slot top of skill card */
+.sk-lottie{
+  width:100%;height:100px;
+  background:rgba(5,0,56,.04);border-radius:10px;
+  border:1px dashed var(--brd);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;overflow:hidden;position:relative;
 }
-.avail-dot-sm {
-  width: 7px; height: 7px; border-radius: 50%; background: #7cba8a;
-  box-shadow: 0 0 0 2px rgba(124,186,138,.25); flex-shrink: 0;
-  animation: pulse-sm 2s infinite;
-}
-@keyframes pulse-sm { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.5);}}
+.sk-illo{font-size:36px}
+.sk-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.03em;margin-bottom:10px}
+.sk-items{display:flex;flex-direction:column;gap:5px}
+.sk-it{font-size:12px;color:var(--mid);display:flex;align-items:center;gap:7px}
+.sk-it::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--Y);flex-shrink:0}
+.tools-row-sec{margin-top:32px;padding-top:24px;border-top:1px solid var(--brd)}
+.tools-lbl{font-size:10px;font-weight:500;color:var(--mid);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+.t-chips{display:flex;flex-wrap:wrap;gap:7px}
+.tchip{font-size:11px;background:var(--bg);border-radius:8px;padding:5px 12px;color:var(--ink);border:1.5px solid var(--brd);transition:background .15s,border-color .15s,transform .15s}
+.tchip:hover{background:var(--Y);border-color:var(--Y);color:var(--N);transform:translateY(-2px)}
 
-/* phones row inside right col */
-.hero-phones {
-  display: flex; gap: 16px; align-items: flex-end;
-  margin-top: 36px;
-}
-.phone {
-  width: 130px; height: 265px;
-  border-radius: 22px; border: 1.5px solid var(--rule);
-  background: white; overflow: hidden; position: relative;
-  box-shadow: 0 20px 48px rgba(0,0,0,0.07), 0 3px 10px rgba(0,0,0,0.04);
-  transform-style: preserve-3d; transform-origin: center bottom;
-  will-change: transform; cursor: pointer; flex-shrink: 0;
-}
-.phone::after { content:''; position:absolute;inset:0;border-radius:22px;background:radial-gradient(ellipse at 30% 20%,rgba(255,255,255,0.35) 0%,transparent 60%);opacity:0;transition:opacity .4s;pointer-events:none;z-index:10; }
-.phone:hover::after { opacity:1; }
-.phone::before { content:'';position:absolute;inset:-3px;border-radius:25px;background:linear-gradient(135deg,rgba(201,122,120,0.3),rgba(201,122,120,0.05),rgba(201,122,120,0.2));opacity:0;transition:opacity .4s;z-index:-1;filter:blur(5px); }
-.phone:hover::before { opacity:1; }
-.phone.tall { height: 300px; }
-.phone.short { height: 235px; }
+/* ═══ CONTACT ═══ */
+.contact-sec{background:var(--N);padding:100px 48px;position:relative;overflow:hidden}
+.contact-sec::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.035) 1px,transparent 1px);background-size:22px 22px;pointer-events:none}
+.contact-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px}
+.contact-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,7vw,88px);line-height:.88;letter-spacing:.01em;color:#F5F2EE}
+.contact-h em{font-style:normal;color:var(--Y)}
+.contact-sub{font-size:14px;color:rgba(255,255,255,.38);line-height:1.7;max-width:420px;margin-top:14px}
+.cc-links{display:flex;flex-direction:column}
+.cc-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.07);text-decoration:none;color:rgba(255,255,255,.65);transition:color .2s,padding-left .2s}
+.cc-row:first-child{border-top:1px solid rgba(255,255,255,.07)}
+.cc-row:hover{color:var(--Y);padding-left:6px}
+.cc-rl{font-size:9px;color:rgba(255,255,255,.28);letter-spacing:.12em;text-transform:uppercase}
+.cc-rv{font-size:13px}
+.cc-ra{font-size:14px;color:rgba(255,255,255,.2);transition:transform .2s,color .2s}
+.cc-row:hover .cc-ra{transform:translate(4px,-4px);color:var(--Y)}
+.avail-b{margin-top:18px;display:flex;align-items:center;gap:8px;background:rgba(60,191,113,.1);border:1.5px solid rgba(60,191,113,.25);border-radius:10px;padding:11px 14px}
+.avail-d{width:7px;height:7px;border-radius:50%;background:#3CBF71;flex-shrink:0;animation:pip 2s infinite}
+.avail-t{font-size:12px;color:rgba(255,255,255,.5)}
+.avail-t strong{color:#3CBF71}
+.cc-note{margin-top:14px;padding:13px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;font-size:12px;color:rgba(255,255,255,.3);font-style:italic;line-height:1.55}
+.cc-form{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:var(--rlg);padding:32px}
+.form-t{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.06em;color:#F5F2EE;margin-bottom:20px}
+.fg{display:flex;flex-direction:column;border-bottom:1px solid rgba(255,255,255,.07)}
+.fg:first-of-type{border-top:1px solid rgba(255,255,255,.07)}
+.fl{font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);padding:10px 0 2px}
+.fi,.fta{background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(255,255,255,.8);padding:2px 0 10px;resize:none;width:100%}
+.fi::placeholder,.fta::placeholder{color:rgba(255,255,255,.15)}
+.fsub{margin-top:16px;background:var(--Y);color:var(--N);border:none;border-radius:8px;padding:11px 26px;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.08em;transition:opacity .15s,transform .15s}
+.fsub:hover{opacity:.88;transform:translateY(-2px)}
 
-/* phone hover micro-anims */
-.phone:hover .app-icon-lg { animation: iconPop 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; }
-@keyframes iconPop { 0%{transform:scale(1);}50%{transform:scale(1.15) rotate(-3deg);}100%{transform:scale(1.08) rotate(0deg);}}
-.phone:hover .splash-feat { animation: featSlide 0.4s ease forwards; }
-.phone:hover .splash-feat:nth-child(1){animation-delay:.05s;}
-.phone:hover .splash-feat:nth-child(2){animation-delay:.1s;}
-.phone:hover .splash-feat:nth-child(3){animation-delay:.15s;}
-.phone:hover .splash-feat:nth-child(4){animation-delay:.2s;}
-@keyframes featSlide { from{transform:translateX(-4px);opacity:.5;} to{transform:translateX(0);opacity:1;}}
-.phone:hover .splash-btn, .phone:hover .verify-btn { animation: btnGlow 0.5s .15s ease forwards; }
-@keyframes btnGlow { 0%{box-shadow:none;}100%{box-shadow:0 4px 16px rgba(201,122,120,.45);}}
-.phone:hover .otp-box { animation: otpFill .25s ease forwards; border-color: var(--deep-rose); background: var(--rose-soft); }
-.phone:hover .otp-box:nth-child(1){animation-delay:.0s;} .phone:hover .otp-box:nth-child(2){animation-delay:.07s;} .phone:hover .otp-box:nth-child(3){animation-delay:.14s;} .phone:hover .otp-box:nth-child(4){animation-delay:.21s;} .phone:hover .otp-box:nth-child(5){animation-delay:.28s;} .phone:hover .otp-box:nth-child(6){animation-delay:.35s;}
-@keyframes otpFill { from{transform:scale(.9);background:white;} to{transform:scale(1);background:var(--rose-soft);}}
-.phone:hover .logo-circle { animation: logoSpin .5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
-@keyframes logoSpin { 0%{transform:scale(1) rotate(0);}60%{transform:scale(1.12) rotate(12deg);}100%{transform:scale(1.05) rotate(0);}}
-.phone:hover .create-btn { animation: btnGlow 0.5s .1s ease forwards; }
-.phone:hover .status-bar { animation: statusFade .3s ease forwards; }
-@keyframes statusFade { from{opacity:.6;}to{opacity:1;}}
+/* ═══ FOOTER ═══ */
+footer{background:#03002A;padding:36px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;border-top:1px solid rgba(255,255,255,.04)}
+.fl-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.08em;color:rgba(255,255,255,.65)}
+.fl-logo em{font-style:normal;color:var(--Y)}
+.fl-ps{font-size:11px;color:rgba(255,255,255,.2);font-style:italic}
+.fl-links{display:flex;gap:7px}
+.flink{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);text-decoration:none;font-size:10px;transition:all .2s}
+.flink:hover{border-color:var(--Y);color:var(--Y);transform:translateY(-2px)}
 
-/* ── PHONE SCREEN CONTENT ── */
-.screen { width:100%;height:100%;padding:14px 11px 11px;position:relative;font-size:9px; }
-.status-bar { display:flex;justify-content:space-between;font-size:6.5px;color:#888;margin-bottom:12px; }
-.screen-splash { background:#fdf8f6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px; }
-.app-icon-lg { width:36px;height:36px;background:var(--deep-rose);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-family:'Bebas Neue',sans-serif; }
-.app-name-lg { font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--deep-rose);letter-spacing:0.04em; }
-.app-tagline { font-size:7px;color:var(--mid);text-align:center;line-height:1.4;max-width:100px;margin-top:3px; }
-.splash-features { margin-top:12px;display:flex;flex-direction:column;gap:3px;width:100%; }
-.splash-feat { display:flex;align-items:center;gap:5px;font-size:6.5px;color:var(--mid); }
-.feat-dot { width:3px;height:3px;border-radius:50%;background:var(--deep-rose);flex-shrink:0; }
-.splash-btn { margin-top:14px;width:100%;background:var(--deep-rose);color:white;border:none;border-radius:7px;padding:7px;font-size:7px;font-family:'DM Sans',sans-serif;cursor:pointer; }
-.screen-signin { background:white; }
-.screen-signin .s-title { font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--ink);margin-bottom:2px;letter-spacing:.02em; }
-.screen-signin .s-sub { font-size:6.5px;color:var(--mid);margin-bottom:14px; }
-.input-group { margin-bottom:8px; }
-.input-label { font-size:6.5px;color:var(--mid);margin-bottom:2px;display:block; }
-.input-field { width:100%;border:1px solid #e0e0e0;border-radius:5px;padding:5px 7px;font-size:7px;color:var(--ink);display:flex;align-items:center;gap:3px;transition:border-color .3s; }
-.verify-btn { width:100%;background:var(--deep-rose);color:white;border:none;border-radius:7px;padding:7px;font-size:7px;margin-top:10px;cursor:pointer;font-family:'DM Sans',sans-serif; }
-.terms { font-size:5.5px;color:#aaa;margin-top:7px;line-height:1.5;text-align:center; }
-.screen-otp { background:white; }
-.screen-otp .s-title { font-family:'Bebas Neue',sans-serif;font-size:18px;margin-bottom:2px;letter-spacing:.02em; }
-.screen-otp .s-sub { font-size:6px;color:var(--mid);margin-bottom:5px; }
-.otp-change { font-size:6px;color:var(--deep-rose); }
-.otp-boxes { display:flex;gap:3px;margin:12px 0;justify-content:center; }
-.otp-box { width:20px;height:24px;border:1px solid #e0e0e0;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--mid); }
-.screen-profile { background:white; }
-.screen-profile .s-title { font-family:'Bebas Neue',sans-serif;font-size:16px;margin-bottom:2px;letter-spacing:.02em; }
-.screen-profile .s-sub { font-size:6px;color:var(--mid);margin-bottom:10px; }
-.logo-upload { display:flex;align-items:center;gap:7px;margin-bottom:10px; }
-.logo-circle { width:30px;height:30px;border-radius:50%;background:var(--rose-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
-.logo-circle svg { width:12px;height:12px;stroke:var(--deep-rose);fill:none;stroke-width:1.5; }
-.logo-text .lt { font-size:7px;font-weight:500;color:var(--ink); }
-.logo-text .ls { font-size:6px;color:var(--mid); }
-.create-btn { width:100%;background:var(--deep-rose);color:white;border:none;border-radius:7px;padding:7px;font-size:7px;margin-top:8px;font-family:'DM Sans',sans-serif;cursor:pointer; }
+/* ═══ GAMES PAGE ═══ */
+.games-pg{}
+.games-hero{background:var(--N);padding:120px 48px 80px;position:relative;overflow:hidden;text-align:center}
+.games-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);background-size:22px 22px;pointer-events:none}
+.gh-eye{font-size:10px;font-weight:500;color:var(--Y);letter-spacing:.16em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:10px}
+.gh-eye::before,.gh-eye::after{content:'';width:28px;height:1px;background:rgba(255,208,47,.5)}
+.gh-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,8vw,90px);line-height:.9;color:#F5F2EE;margin-bottom:18px}
+.gh-title em{font-style:normal;color:var(--Y)}
+.gh-sub{font-size:14px;color:rgba(255,255,255,.38);max-width:500px;margin:0 auto 48px;line-height:1.75}
+.gh-stats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+.gh-stat-n{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;color:var(--Y)}
+.gh-stat-l{font-size:10px;color:rgba(255,255,255,.28);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.games-grid-sec{background:var(--bg);padding:72px 48px}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:14px;max-width:1100px;margin:0 auto}
+.gc{background:var(--W);border-radius:var(--rlg);border:1.5px solid var(--brd);overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .2s}
+.gc:hover{border-color:var(--Y);transform:translateY(-5px);box-shadow:0 14px 40px rgba(255,208,47,.13)}
+.gc-thumb{height:190px;background:var(--N);display:flex;align-items:center;justify-content:center;font-size:60px;position:relative;overflow:hidden}
+.gc-thumb::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 80%,rgba(255,208,47,.12) 0%,transparent 65%)}
+/* lottie slot inside game thumb */
+.gc-lottie{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.gc-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(5,0,56,.5);backdrop-filter:blur(4px);opacity:0;transition:opacity .25s}
+.gc:hover .gc-play{opacity:1}
+.gplay-btn{background:var(--Y);color:var(--N);border:none;border-radius:50px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.1em;padding:9px 24px}
+.gc-info{padding:20px 22px}
+.gc-tag{font-size:10px;font-weight:500;color:var(--B);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.gc-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.04em;margin-bottom:5px}
+.gc-desc{font-size:12px;color:var(--mid);line-height:1.6}
+.gc-ft{display:flex;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap;gap:5px}
+.gc-techs{display:flex;gap:5px}
+.gtech{font-size:10px;background:var(--bg);border-radius:5px;padding:2px 8px;color:var(--mid)}
+.game-modal{position:fixed;inset:0;z-index:600;background:rgba(5,0,56,.88);backdrop-filter:blur(12px);display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.game-modal.on{display:flex}
+.gm-wrap{background:var(--W);border-radius:var(--rlg);overflow:hidden;max-width:500px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,.6);max-height:90vh;display:flex;flex-direction:column}
+.gm-head{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--brd);flex-shrink:0}
+.gm-t{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.06em}
+.gm-x{background:none;border:none;font-size:18px;color:var(--mid);width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.gm-x:hover{background:var(--bg)}
+.gm-cv{background:var(--N);display:flex;justify-content:center;padding:14px;flex-shrink:0}
+canvas{display:block;border-radius:8px}
+.gm-ft{padding:10px 18px;border-top:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px;flex-shrink:0}
+.gm-hint{font-size:11px;color:var(--mid)}
+.gm-scw{display:flex;align-items:center;gap:8px}
+.gm-sc{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--B)}
+.gm-rb{background:var(--Y);color:var(--N);border:none;border-radius:7px;padding:5px 14px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.06em}
 
-/* ════════════════════════
-   STATS
-════════════════════════ */
-.stats-section { display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule); }
-.stat-item { padding:72px 48px;border-right:1px solid var(--rule); }
-.stat-item:last-child { border-right:none; }
-.stat-num { font-family:'Bebas Neue',sans-serif;font-size:80px;line-height:1;letter-spacing:-0.01em;margin-bottom:8px; }
-.stat-num span { color:var(--deep-rose); }
-.stat-label { font-size:13px;color:var(--mid);line-height:1.6;max-width:200px; }
+/* ═══ CS PAGES ═══ */
+.cs-topbar{position:fixed;top:0;left:0;right:0;z-index:400;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(248,247,244,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--brd)}
+.cs-back{font-size:12px;color:var(--mid);background:none;border:none;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:5px;transition:color .2s}
+.cs-back::before{content:'←';font-size:14px}
+.cs-back:hover{color:var(--ink)}
+.cs-tb-t{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.06em}
+.cs-tb-tag{font-size:11px;color:var(--mid)}
+.cs-hero{min-height:58vh;display:flex;align-items:flex-end;padding:108px 48px 60px;background:var(--N);position:relative;overflow:hidden}
+.cs-hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 55% at 80% 20%,rgba(66,98,255,.2) 0%,transparent 60%);pointer-events:none}
+.cs-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);background-size:22px 22px;pointer-events:none}
+.cs-hi{max-width:780px;position:relative;z-index:1}
+.cs-eye{font-size:10px;font-weight:500;color:var(--Y);letter-spacing:.16em;text-transform:uppercase;margin-bottom:15px;display:flex;align-items:center;gap:9px}
+.cs-eye::before{content:'';width:16px;height:1px;background:var(--Y)}
+.cs-ht{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6.5vw,80px);line-height:.9;letter-spacing:.01em;color:#F5F2EE;margin-bottom:18px}
+.cs-ht em{font-style:normal;color:var(--Y)}
+.cs-hs{font-size:14px;color:rgba(245,242,238,.5);line-height:1.75;max-width:520px}
+.cs-meta{display:grid;grid-template-columns:repeat(4,1fr);background:var(--W);border-bottom:1.5px solid var(--brd)}
+.cs-mi{padding:20px 28px;border-right:1.5px solid var(--brd)}
+.cs-mi:last-child{border-right:none}
+.cs-ml{font-size:9px;color:var(--mid);letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px}
+.cs-mv{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.04em}
+.cs-body{background:var(--bg)}
+.cs-sec{max-width:760px;margin:0 auto;padding:52px 40px;border-bottom:1px solid var(--brd)}
+.cs-sec:last-child{border-bottom:none}
+.cs-sec.wide{max-width:none}
+.cs-sec.alt{background:var(--W)}
+.cs-sh{display:flex;align-items:baseline;gap:12px;margin-bottom:20px}
+.cs-sn{font-size:10px;color:var(--B);letter-spacing:.12em;text-transform:uppercase;font-weight:500;white-space:nowrap}
+.cs-st{font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,2.8vw,34px);letter-spacing:.03em;line-height:1}
+.cs-p{font-size:14px;color:var(--mid);line-height:1.82;margin-bottom:14px}
+.cs-p:last-child{margin-bottom:0}
+.cs-p strong{color:var(--ink);font-weight:500}
+.cs-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+.cs-m{background:var(--W);border:1.5px solid var(--brd);border-radius:var(--r);padding:22px 20px;transition:transform .2s,box-shadow .2s,border-color .2s}
+.cs-m:hover{transform:translateY(-3px);box-shadow:0 9px 26px rgba(255,208,47,.11);border-color:var(--Y)}
+.cs-mn{font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1;letter-spacing:-.01em;margin-bottom:4px}
+.cs-mn em{font-style:normal;color:var(--B)}
+.cs-ml2{font-size:12px;color:var(--mid);line-height:1.5}
+.cs-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}
+.cs-cell{background:var(--W);border:1.5px solid var(--brd);border-radius:var(--r);padding:20px}
+.cs-sec.alt .cs-cell{background:var(--bg)}
+.cs-cell h4{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:.04em;margin-bottom:5px}
+.cs-cell p{font-size:12px;color:var(--mid);line-height:1.65}
+.cs-steps{display:flex;flex-direction:column;gap:9px;margin:18px 0}
+.cs-step{background:var(--W);border:1.5px solid var(--brd);border-radius:var(--r);display:flex;overflow:hidden;transition:border-color .2s,transform .2s}
+.cs-sec.alt .cs-step{background:var(--bg)}
+.cs-step:hover{border-color:var(--Y);transform:translateX(4px)}
+.cs-snum{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--brd);width:48px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-right:1.5px solid var(--brd)}
+.cs-sb{padding:14px 18px}
+.cs-sb strong{font-size:13px;font-weight:500;color:var(--ink);display:block;margin-bottom:2px}
+.cs-sb p{font-size:12px;color:var(--mid);line-height:1.6}
+.cs-cq{background:#FFFBF0;border:1.5px solid var(--Y);border-radius:var(--r);padding:20px 24px;margin:18px 0}
+.cs-cq-t{font-size:15px;font-style:italic;color:var(--ink);line-height:1.6;margin-bottom:5px}
+.cs-cq-a{font-size:10px;color:var(--mid);letter-spacing:.08em;text-transform:uppercase}
+.cs-img{width:100%;border:1.5px solid var(--brd);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin:16px 0;background:var(--W)}
+.cs-img.sm{height:160px}.cs-img.lg{height:240px}
+.cs-img span:first-child{font-size:1.8rem;opacity:.22}
+.cs-img span:last-child{font-size:10px;color:var(--mid);letter-spacing:.1em;text-transform:uppercase}
+.cs-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.cs-badge{font-size:10px;background:var(--bg);border-radius:50px;padding:3px 10px;color:var(--mid)}
+.cs-foot{background:var(--N);padding:28px 40px;display:flex;justify-content:space-between;align-items:center}
+.cs-fl{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.06em;color:rgba(255,255,255,.65)}
+.cs-fl em{font-style:normal;color:var(--Y)}
+.cs-fb{font-size:11px;color:rgba(255,255,255,.28);letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+.cs-fb:hover{color:var(--Y)}
 
-/* ════════════════════════
-   SHARED SECTION
-════════════════════════ */
-section { padding:100px 48px;border-top:1px solid var(--rule); }
-.section-label {
-  font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--mid);
-  margin-bottom:56px;display:flex;align-items:center;gap:16px;
-}
-.section-label::after { content:'';flex:1;height:1px;background:var(--rule); }
-.section-label .sl-num { font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--deep-rose);letter-spacing:.04em; }
-
-/* ════════════════════════
-   ABOUT
-════════════════════════ */
-.about-section { background:var(--paper); }
-.about-grid { display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule); }
-.about-left { padding:60px 52px;border-right:1px solid var(--rule); }
-.about-title { font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,5vw,72px);line-height:0.92;letter-spacing:0.01em;margin-bottom:24px; }
-.about-title em { font-style:normal;color:var(--deep-rose); }
-.about-body { font-size:14px;color:var(--mid);line-height:1.8;margin-bottom:28px; }
-.about-tags { display:flex;flex-wrap:wrap;gap:8px; }
-.about-tag { font-size:11px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--rule);padding:6px 14px;color:var(--mid); }
-.worked-with { margin-top:36px;padding-top:24px;border-top:1px solid var(--rule); }
-.ww-label { font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mid);margin-bottom:12px; }
-.ww-logos { display:flex;gap:10px;flex-wrap:wrap; }
-.ww-chip { font-size:12px;font-weight:500;border:1px solid var(--rule);padding:5px 14px;color:var(--ink); }
-.about-right { padding:60px 52px; }
-.pillar-row { padding:22px 0;border-bottom:1px solid var(--rule);display:flex;gap:20px;align-items:flex-start; }
-.pillar-row:first-child { padding-top:0; }
-.pillar-row:last-child { border-bottom:none;padding-bottom:0; }
-.pillar-num { font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--rule);line-height:1;flex-shrink:0;width:32px; }
-.pillar-name { font-size:15px;font-weight:500;margin-bottom:4px;letter-spacing:-0.01em; }
-.pillar-desc { font-size:13px;color:var(--mid);line-height:1.65; }
-
-/* ════════════════════════
-   SKILLS
-════════════════════════ */
-.skills-section { background:white; }
-.skills-grid { display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule); }
-.skills-col { padding:48px;border-right:1px solid var(--rule); }
-.skills-col:last-child { border-right:none; }
-.sk-col-title { font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mid);margin-bottom:28px; }
-.sk-row { margin-bottom:22px; }
-.sk-top { display:flex;justify-content:space-between;margin-bottom:8px; }
-.sk-name { font-size:14px;font-weight:400; }
-.sk-pct { font-size:11px;color:var(--mid); }
-.sk-track { height:1px;background:var(--rule);position:relative; }
-.sk-fill { height:1px;background:var(--ink);width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1);position:absolute;top:0;left:0; }
-.sk-fill::after { content:'';position:absolute;right:0;top:-3px;width:7px;height:7px;border-radius:50%;background:var(--deep-rose); }
-.tools-row { margin-top:36px;padding-top:28px;border-top:1px solid var(--rule); }
-.tools { display:flex;flex-wrap:wrap;gap:8px;margin-top:10px; }
-.t-tag { font-size:11px;border:1px solid var(--rule);padding:5px 12px;color:var(--mid);letter-spacing:.04em;transition:border-color .2s,color .2s;cursor:default; }
-.t-tag:hover { border-color:var(--deep-rose);color:var(--ink); }
-
-/* ════════════════════════
-   WORK
-════════════════════════ */
-.work-section { background:var(--paper); }
-.work-grid { display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule); }
-.work-item { padding:52px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);position:relative;transition:background .3s;cursor:pointer; }
-.work-item:hover { background:white; }
-.work-item:nth-child(even) { border-right:none; }
-.work-item:nth-child(3),.work-item:nth-child(4) { border-bottom:none; }
-.work-num { font-family:'Bebas Neue',sans-serif;font-size:56px;color:var(--rule);line-height:1;margin-bottom:16px; }
-.work-cat { font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--deep-rose);margin-bottom:10px; }
-.work-title { font-family:'Bebas Neue',sans-serif;font-size:clamp(22px,2.8vw,38px);letter-spacing:.02em;margin-bottom:10px;line-height:0.96; }
-.work-desc { font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:22px; }
-.work-tags { display:flex;flex-wrap:wrap;gap:6px; }
-.work-tag { font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--rule);padding:4px 10px;color:var(--mid); }
-.work-arrow { position:absolute;bottom:52px;right:52px;width:38px;height:38px;border:1px solid var(--rule);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--mid);transition:all .25s; }
-.work-item:hover .work-arrow { border-color:var(--deep-rose);color:var(--deep-rose);transform:translate(2px,-2px); }
-.work-phone-mini { width:100px;height:185px;border-radius:16px;border:1px solid var(--rule);background:white;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.06);margin-bottom:20px; }
-
-/* ════════════════════════
-   ALL SCREENS
-════════════════════════ */
-.screens-section { background:white; }
-.screens-scroll { display:flex;gap:20px;overflow-x:auto;padding-bottom:20px;scrollbar-width:none; }
-.screens-scroll::-webkit-scrollbar { display:none; }
-.screen-card { flex-shrink:0;width:190px; }
-.screen-card-phone { width:190px;height:380px;border-radius:28px;border:1.5px solid var(--rule);background:white;overflow:hidden;box-shadow:0 20px 44px rgba(0,0,0,.06);margin-bottom:16px;position:relative;transition:transform .3s,box-shadow .3s; }
-.screen-card-phone:hover { transform:translateY(-10px) scale(1.015);box-shadow:0 36px 68px rgba(0,0,0,.13),0 0 0 1px rgba(201,122,120,.12); }
-.screen-card-phone::after { content:'';position:absolute;inset:0;border-radius:28px;background:radial-gradient(ellipse at 30% 15%,rgba(255,255,255,.28) 0%,transparent 55%);opacity:0;transition:opacity .4s;pointer-events:none;z-index:10; }
-.screen-card-phone:hover::after { opacity:1; }
-.screen-card-label { font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mid); }
-.screen-card-name { font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.04em;margin-top:2px; }
-
-/* ════════════════════════
-   CONTACT
-════════════════════════ */
-.contact-section { background:var(--paper); }
-.contact-grid { display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule); }
-.contact-left { padding:60px 52px;border-right:1px solid var(--rule); }
-.contact-title { font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,72px);line-height:0.92;letter-spacing:.01em;margin-bottom:20px; }
-.contact-title em { font-style:normal;color:var(--deep-rose); }
-.contact-body { font-size:14px;color:var(--mid);line-height:1.8;margin-bottom:36px; }
-.contact-links { display:flex;flex-direction:column; }
-.contact-link-row { display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--ink);transition:color .2s; }
-.contact-link-row:first-child { border-top:1px solid var(--rule); }
-.contact-link-row:hover { color:var(--deep-rose); }
-.cl-label { font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mid); }
-.cl-value { font-size:14px; }
-.cl-arrow { font-size:16px;color:var(--mid);transition:transform .2s; }
-.contact-link-row:hover .cl-arrow { transform:translate(3px,-3px);color:var(--deep-rose); }
-.avail-row { margin-top:28px;display:flex;align-items:center;gap:10px; }
-.avail-dot { width:8px;height:8px;border-radius:50%;background:#7cba8a;box-shadow:0 0 0 3px rgba(124,186,138,.2);flex-shrink:0;animation:pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
-.avail-text { font-size:13px;color:var(--mid); }
-.avail-text strong { color:var(--ink); }
-.contact-right { padding:60px 52px; }
-.cf { display:flex;flex-direction:column;gap:0; }
-.cf-title { font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.04em;margin-bottom:28px; }
-.fg { display:flex;flex-direction:column;gap:0;border-bottom:1px solid var(--rule); }
-.fg:first-of-type { border-top:1px solid var(--rule); }
-.fl { font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mid);padding:11px 0 3px; }
-.fi,.fta { background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);padding:3px 0 11px;resize:none;width:100%; }
-.fi::placeholder,.fta::placeholder { color:#c0bdb8; }
-.fsub { margin-top:22px;align-self:flex-start;background:var(--ink);color:var(--paper);border:none;padding:11px 28px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.1em;cursor:pointer;transition:background .2s; }
-.fsub:hover { background:var(--deep-rose); }
-
-/* ════════════════════════
-   FOOTER
-════════════════════════ */
-footer { border-top:1px solid var(--rule);padding:44px 48px;display:flex;justify-content:space-between;align-items:center; }
-.footer-logo { font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.04em; }
-.footer-logo span { color:var(--deep-rose); }
-.footer-right { font-size:11px;color:var(--mid);letter-spacing:.1em;text-transform:uppercase; }
-
-/* ════════════════════════
-   CASE STUDY PAGES
-════════════════════════ */
-.cs-nav-bar { position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;background:rgba(245,243,239,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule); }
-.cs-back-btn { font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mid);cursor:pointer;display:flex;align-items:center;gap:8px;background:none;border:none;font-family:'DM Sans',sans-serif;transition:color .2s; }
-.cs-back-btn:hover { color:var(--ink); }
-.cs-back-btn::before { content:'←';font-size:14px; }
-.cs-nav-title { font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.06em; }
-.cs-hero-section { min-height:70vh;display:flex;align-items:flex-end;padding:130px 48px 72px;position:relative;overflow:hidden;border-bottom:1px solid var(--rule); }
-.cs-hero-inner { max-width:860px; }
-.cs-eyebrow { font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--deep-rose);margin-bottom:24px;display:flex;align-items:center;gap:12px; }
-.cs-eyebrow::before { content:'';width:20px;height:1px;background:var(--deep-rose); }
-.cs-hero-title { font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,110px);line-height:0.9;letter-spacing:.01em;margin-bottom:24px; }
-.cs-hero-title em { font-style:normal;color:var(--deep-rose); }
-.cs-hero-sub { font-size:16px;color:var(--mid);line-height:1.75;max-width:600px; }
-.cs-meta-strip { display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule); }
-.cs-meta-item { padding:28px 44px;border-right:1px solid var(--rule); }
-.cs-meta-item:last-child { border-right:none; }
-.cs-meta-label { font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mid);margin-bottom:5px; }
-.cs-meta-value { font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.04em; }
-.cs-section { padding:72px 48px;border-bottom:1px solid var(--rule); }
-.cs-section:last-child { border-bottom:none; }
-.cs-section-inner { max-width:820px; }
-.cs-section.alt { background:white; }
-.cs-h2 { font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,4vw,52px);letter-spacing:.02em;margin-bottom:28px;display:flex;align-items:baseline;gap:16px; }
-.cs-h2-num { font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--deep-rose);font-family:'DM Sans',sans-serif; }
-.cs-p { font-size:15px;color:var(--mid);line-height:1.85;margin-bottom:18px; }
-.cs-p:last-child { margin-bottom:0; }
-.cs-p strong { color:var(--ink);font-weight:500; }
-.cs-metrics { display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--rule);margin:40px 0; }
-.cs-m { padding:44px 36px;border-right:1px solid var(--rule); }
-.cs-m:last-child { border-right:none; }
-.cs-mn { font-family:'Bebas Neue',sans-serif;font-size:60px;line-height:1;letter-spacing:-0.01em;margin-bottom:6px; }
-.cs-mn span { color:var(--deep-rose); }
-.cs-ml { font-size:13px;color:var(--mid);line-height:1.6;max-width:160px; }
-.cs-2col { display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule);margin:28px 0; }
-.cs-col-cell { padding:36px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule); }
-.cs-col-cell:nth-child(even) { border-right:none; }
-.cs-col-cell:nth-last-child(-n+2) { border-bottom:none; }
-.cs-col-cell h4 { font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.04em;margin-bottom:10px; }
-.cs-col-cell p { font-size:13px;color:var(--mid);line-height:1.75; }
-.cs-steps { display:flex;flex-direction:column;gap:0;border:1px solid var(--rule);margin:28px 0; }
-.cs-step { display:flex;gap:0;border-bottom:1px solid var(--rule);transition:background .2s; }
-.cs-step:last-child { border-bottom:none; }
-.cs-step:hover { background:white; }
-.cs-sn { width:68px;padding:22px 24px;border-right:1px solid var(--rule);font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--rule);line-height:1;flex-shrink:0; }
-.cs-step-body { padding:22px 28px; }
-.cs-step-body strong { font-size:15px;font-weight:500;display:block;margin-bottom:5px; }
-.cs-step-body p { font-size:13px;color:var(--mid);line-height:1.7; }
-.cs-callout { border-left:2px solid var(--deep-rose);padding:22px 28px;margin:28px 0;background:white; }
-.cs-callout-text { font-size:17px;font-style:italic;color:var(--ink);line-height:1.6;margin-bottom:8px; }
-.cs-callout-attr { font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid); }
-.cs-img { width:100%;border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;margin:20px 0;background:var(--paper); }
-.cs-img.sm { height:190px; } .cs-img.lg { height:300px; }
-.cs-img-icon { font-size:2.2rem;opacity:.35; }
-.cs-img-label { font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mid); }
-.cs-tags { display:flex;flex-wrap:wrap;gap:8px;margin-top:14px; }
-.cs-badge { font-size:11px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--rule);padding:5px 12px;color:var(--mid); }
-
-/* ════════════════════════
-   REVEAL / KEYFRAMES
-════════════════════════ */
-.reveal { opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease; }
-.reveal.visible { opacity:1;transform:none; }
-.reveal-d1{transition-delay:.1s;} .reveal-d2{transition-delay:.2s;} .reveal-d3{transition-delay:.3s;} .reveal-d4{transition-delay:.4s;}
-
-@keyframes fadeUp { from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;} }
-
-/* stacked word entrance */
-.stack-word {
-  opacity: 0;
-  transform: translateY(40px);
-  animation: stackIn 0.7s cubic-bezier(.76,0,.24,1) forwards;
-}
-.stack-word:nth-child(1){animation-delay:.1s;}
-.stack-word:nth-child(2){animation-delay:.18s;}
-.stack-word:nth-child(3){animation-delay:.26s;}
-.stack-word:nth-child(4){animation-delay:.34s;}
-.stack-word:nth-child(5){animation-delay:.42s;}
-.stack-word:nth-child(6){animation-delay:.50s;}
-.stack-word:nth-child(7){animation-delay:.58s;}
-.stack-word:nth-child(8){animation-delay:.66s;}
-.stack-word:nth-child(9){animation-delay:.74s;}
-.stack-word:nth-child(10){animation-delay:.82s;}
-@keyframes stackIn { from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);} }
-
-.hero-right-col { opacity:0;animation:fadeUp .9s .6s forwards; }
-
-/* responsive */
+/* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){
-  .hero { grid-template-columns:1fr; }
-  .hero-stack { border-right:none;border-bottom:1px solid var(--rule);padding:88px 24px 40px; }
-  .hero-right-col { padding:40px 24px 60px; }
-  .about-grid,.skills-grid,.work-grid,.contact-grid,.cs-2col { grid-template-columns:1fr; }
-  .about-left,.skills-col,.about-right { border-right:none;border-bottom:1px solid var(--rule); }
-  .stats-section { grid-template-columns:1fr; }
-  .stat-item { border-right:none;border-bottom:1px solid var(--rule);padding:48px 24px; }
-  .cs-meta-strip { grid-template-columns:1fr 1fr; }
-  .cs-metrics { grid-template-columns:1fr; }
-  .cs-m { border-right:none;border-bottom:1px solid var(--rule); }
-  section,.cs-section,.cs-hero-section,.contact-left,.contact-right,.about-left,.about-right,.cs-nav-bar,.footer { padding-left:24px;padding-right:24px; }
-  .hero-phones { gap:10px; }
-  .nav-links { display:none; }
+  .hero-col{width:160px}
+  .hero-col-l{left:-10px}
+  .hero-col-r{right:-10px}
+  .about-grid,.contact-grid,.cs-2col,.cs-metrics{grid-template-columns:1fr}
+  .sk-grid{grid-template-columns:1fr 1fr}
+  .cs-meta{grid-template-columns:1fr 1fr}
+  .cs-mi{border-right:none;border-bottom:1px solid var(--brd)}
+  .cs-mi:last-child{border-bottom:none}
+  .wcard{grid-template-columns:1fr}
+  .wc-th{display:none}
+  .about-stats{grid-template-columns:1fr 1fr}
 }
+@media(max-width:640px){
+  .hero-col{display:none}
+  .hero-center{max-width:100%;padding:0 20px}
+  .hero-h{font-size:clamp(52px,16vw,80px)}
+  .float-nav-inner .nav-link,.float-nav-inner .nav-cta-btn{display:none}
+  .nav-ham{display:flex}
+  .sec{padding:72px 20px}
+  .games-grid{grid-template-columns:1fr 1fr}
+  .sk-grid{grid-template-columns:1fr}
+  footer,.contact-sec,.games-hero,.games-grid-sec{padding-left:20px;padding-right:20px}
+  .cs-sec,.cs-hero,.cs-foot,.cs-topbar{padding-left:20px;padding-right:20px}
+  .story-inner{padding:0 20px}
+}
+@media(max-width:420px){.games-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<div id="cd"></div>
-<div id="cr"></div>
+<!-- SVG gooey filter -->
+<svg class="svg-filters" aria-hidden="true">
+  <defs>
+    <filter id="goo">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+      <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/>
+      <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- CURSOR -->
+<div id="cur">
+  <svg viewBox="0 0 20 20" fill="none">
+    <path d="M4 2L17 9.5L10.5 11.5L8 18L4 2Z" fill="#4262FF" stroke="white" stroke-width="1.2" stroke-linejoin="round"/>
+  </svg>
+  <div id="curtag" class="ct-hero">shyani 🎨</div>
+</div>
 <div id="prog"></div>
 
-<!-- ═══════ NAV ═══════ -->
-<nav id="nav">
-  <a href="#" class="nav-logo" onclick="showPage('main');return false;">SP</a>
-  <ul class="nav-links">
-    <li><a href="#about-section" onclick="showPage('main')">About</a></li>
-    <li><a href="#skills-section" onclick="showPage('main')">Skills</a></li>
-    <li><a href="#work-section" onclick="showPage('main')">Work</a></li>
-    <li><a href="#contact-section" onclick="showPage('main')">Contact</a></li>
-  </ul>
-  <div class="nav-tag">Product Designer — 2025</div>
-</nav>
+<!-- ═══ FLOATING GOOEY NAV ═══ -->
+<div class="float-nav" id="fnav">
+  <div class="float-nav-inner" id="fni">
+    <div class="nav-blob" id="navBlob"></div>
+    <button class="nav-logo-btn" onclick="goHome()">
+      <div class="nav-logo-dot"></div>SP
+    </button>
+    <button class="nav-link" data-i="0" onclick="goHome();ss('about')">About</button>
+    <button class="nav-link" data-i="1" onclick="goHome();ss('work')">Work</button>
+    <button class="nav-link" data-i="2" onclick="goHome();ss('skills')">Skills</button>
+    <button class="nav-link" data-i="3" onclick="goGames()">Games 🕹️</button>
+    <button class="nav-cta-btn" onclick="goHome();ss('contact')">Say Hello</button>
+    <button class="nav-ham" id="ham" onclick="toggleD()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</div>
+<div class="drawer" id="drawer">
+  <a href="#" onclick="goHome();closeD();setTimeout(()=>ss('about'),200);return false">About</a>
+  <a href="#" onclick="goHome();closeD();setTimeout(()=>ss('work'),200);return false">Work</a>
+  <a href="#" onclick="goHome();closeD();setTimeout(()=>ss('skills'),200);return false">Skills</a>
+  <a href="#" onclick="goGames();closeD();return false">Games 🕹️</a>
+  <a href="mailto:shyanipal06@gmail.com">Say Hello →</a>
+</div>
 
-<!-- ═══════ MAIN PAGE ═══════ -->
-<div id="page-main" class="page active">
+<!-- ═══ MAIN PAGE ═══ -->
+<div id="page-main" class="page on">
 
-<!-- ══════════════════════════════════════
-     HERO — STACKED WORDS + RIGHT COL
-══════════════════════════════════════ -->
-<div class="hero">
+<!-- ──────────────────────────────────────────
+     HERO — CINEMATIC SIDE COLUMNS
+────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
 
-  <!-- LEFT: stacked word column -->
-  <div class="hero-stack">
-    <span class="stack-word fill sw-design"><span class="word-inner">Design</span></span>
-    <div class="stack-rule"></div>
-    <span class="stack-word outline sw-vibe"><span class="word-inner">Vibe</span></span>
-    <span class="stack-word rose sw-coder"><span class="word-inner">Coder</span></span>
-    <div class="stack-rule"></div>
-    <span class="stack-word outline sw-only"><span class="word-inner">Only</span></span>
-    <span class="stack-word fill sw-ui"><span class="word-inner">UI</span></span>
-    <div class="stack-rule"></div>
-    <span class="stack-word outline-rose sw-ux"><span class="word-inner">UX</span></span>
-    <div class="stack-rule"></div>
-    <span class="stack-word fill sw-design"><span class="word-inner">Design</span></span>
-    <span class="stack-word outline sw-vibe"><span class="word-inner">Vibe</span></span>
+  <!-- LEFT COLUMN — 4 Lottie/image slots -->
+  <div class="hero-col hero-col-l">
+    <div class="hcard">
+      <div class="lottie-slot" style="height:160px" id="slot-l1">
+        <div class="slot-dashed"></div>
+        <div class="slot-placeholder">
+          <div class="slot-icon">🎨</div>
+          <div class="slot-text">Drop Lottie JSON<br>or Illustration</div>
+        </div>
+      </div>
+      <div class="slot-label">illustration · slot 1</div>
+    </div>
+    <div class="hcard">
+      <div class="lottie-slot" style="height:130px" id="slot-l2">
+        <div class="slot-dashed"></div>
+        <div class="slot-placeholder">
+          <div class="slot-icon">✏️</div>
+          <div class="slot-text">Animation · Slot 2</div>
+        </div>
+      </div>
+      <div class="slot-label">animation · slot 2</div>
+    </div>
+    <div class="hcard">
+      <div class="lottie-slot" style="height:140px" id="slot-l3">
+        <div class="slot-dashed"></div>
+        <div class="slot-placeholder">
+          <div class="slot-icon">🖌️</div>
+          <div class="slot-text">UI Mockup · Slot 3</div>
+        </div>
+      </div>
+      <div class="slot-label">mockup · slot 3</div>
+    </div>
   </div>
 
-  <!-- RIGHT: info block -->
-  <div class="hero-right-col">
-    <div>
-      <div class="hero-meta">
-        <div class="hero-meta-row">
-          <span class="hm-label">Role</span>
-          <span class="hm-value">Product Designer</span>
-        </div>
-        <div class="hero-meta-row">
-          <span class="hm-label">Domain</span>
-          <span class="hm-value">Fintech · SaaS · EV</span>
-        </div>
-        <div class="hero-meta-row">
-          <span class="hm-label">Experience</span>
-          <span class="hm-value rose">4+ Years</span>
-        </div>
-        <div class="hero-meta-row">
-          <span class="hm-label">Based</span>
-          <span class="hm-value">Bengaluru, IN</span>
-        </div>
-      </div>
-
-      <h2 class="hero-tagline">Shyani Pal —<br>Making things<br>people love.</h2>
-      <p class="hero-bio">4+ years designing intuitive, scalable fintech and SaaS applications — turning complex problems into experiences that drive measurable impact.</p>
-      <div class="hero-cta-row">
-        <a href="#work-section" class="hero-cta primary" onclick="showPage('main')">View Work</a>
-        <a href="mailto:shyanipal06@gmail.com" class="hero-cta">Get in touch ↗</a>
-      </div>
-      <div class="hero-avail"><div class="avail-dot-sm"></div>Open to opportunities</div>
+  <!-- CENTER CONTENT -->
+  <div class="hero-center">
+    <div class="hero-pill">
+      <div class="hero-pip"></div>
+      Bengaluru · Open to Work
     </div>
-
-    <!-- phones -->
-    <div class="hero-phones">
-      <div class="phone short">
-        <div class="screen screen-splash">
-          <div class="status-bar"><span>9:41</span><span>▾▪▪</span></div>
-          <div class="app-icon-lg">Fy</div>
-          <div class="app-name-lg">fyle</div>
-          <div class="app-tagline">Smart expense management</div>
-          <div class="splash-features">
-            <div class="splash-feat"><span class="feat-dot"></span>Bulk mileage entry</div>
-            <div class="splash-feat"><span class="feat-dot"></span>Submit expenses</div>
-            <div class="splash-feat"><span class="feat-dot"></span>Track approvals</div>
-          </div>
-          <button class="splash-btn">Get started</button>
-        </div>
-      </div>
-      <div class="phone tall">
-        <div class="screen screen-signin">
-          <div class="status-bar"><span>9:41</span><span>▾▪▪</span></div>
-          <div class="s-title">Sign in</div>
-          <div class="s-sub">No password required</div>
-          <div class="input-group">
-            <span class="input-label">Phone</span>
-            <div class="input-field">🇮🇳 +91</div>
-          </div>
-          <button class="verify-btn">Verify</button>
-          <div class="terms">By continuing you agree to our terms</div>
-        </div>
-      </div>
-      <div class="phone">
-        <div class="screen screen-otp">
-          <div class="status-bar"><span>9:41</span><span>▾▪▪</span></div>
-          <div class="s-title">Verify</div>
-          <div class="s-sub">6 digit code sent to +91···</div>
-          <div class="otp-change">Change number</div>
-          <div class="otp-boxes">
-            <div class="otp-box">·</div><div class="otp-box">·</div><div class="otp-box">·</div>
-            <div class="otp-box">·</div><div class="otp-box">·</div><div class="otp-box">·</div>
-          </div>
-          <button class="verify-btn">Verify ✓</button>
-        </div>
-      </div>
-      <div class="phone short">
-        <div class="screen screen-profile">
-          <div class="status-bar"><span>9:41</span><span>▾▪▪</span></div>
-          <div class="s-title">Setup</div>
-          <div class="s-sub">Business info to start</div>
-          <div class="logo-upload">
-            <div class="logo-circle"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-            <div class="logo-text"><div class="lt">Company logo</div><div class="ls">Upload brand logo</div></div>
-          </div>
-          <div class="input-group"><span class="input-label">Full name</span><div class="input-field" style="color:#bbb">Enter full name</div></div>
-          <div class="input-group"><span class="input-label">Business name</span><div class="input-field" style="color:#bbb">Business name</div></div>
-          <button class="create-btn">Create profile</button>
-        </div>
-      </div>
+    <h1 class="hero-h">
+      SHYANI<br><em>PAL</em><br>PRODUCT<br>DESIGNER
+    </h1>
+    <p class="hero-sub">
+      4+ years · Fintech · SaaS · EV<br>
+      <em style="font-style:normal;color:rgba(255,208,47,.7);font-size:12px">PS: I tell people what to do without telling them.</em>
+    </p>
+    <div class="hero-btns">
+      <a href="#" class="btn-y" onclick="ss('work');return false">See My Work →</a>
+      <a href="#" class="btn-ghost-w" onclick="goGames();return false">Games 🕹️</a>
     </div>
+  </div>
+
+  <!-- RIGHT COLUMN — 4 Lottie/image slots -->
+  <div class="hero-col hero-col-r">
+    <div class="hcard">
+      <div class="lottie-slot" style="height:140px" id="slot-r1">
+        <div class="slot-dashed"></div>
+        <div class="slot-placeholder">
+          <div class="slot-icon">📱</div>
+          <div class="slot-text">Screen Recording · Slot 4</div>
+        </div>
+      </div>
+      <div class="slot-label">screen · slot 4</div>
+    </div>
+    <div class="hcard">
+      <div class="lottie-slot" style="height:150px" id="slot-r2">
+        <div class="slot-dashed"></div>
+        <div class="slot-placeholder">
+          <div class="slot-icon">💡</div>
+          <div class="slot-text">Illustration · Slot 5</div>
+        </div>
+      </div>
+      <div class="slot-label">illustration · slot 5</div>
+    </div>
+    <div class="hcard">
+      <div class="lottie-slot" style="height:130px" id="slot-r3">
+        <div class="slot-dashed"></div>
+        <div class="slot-placeholder">
+          <div class="slot-icon">🚀</div>
+          <div class="slot-text">Animation · Slot 6</div>
+        </div>
+      </div>
+      <div class="slot-label">animation · slot 6</div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <div class="scroll-ring">↓</div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="mdot"></span>Product Design<span class="mdot"></span>Fintech<span class="mdot"></span>SaaS<span class="mdot"></span>EV<span class="mdot"></span>Enterprise<span class="mdot"></span>Wireframing<span class="mdot"></span>Prototyping<span class="mdot"></span>UI Kit<span class="mdot"></span>Icons<span class="mdot"></span>No-code<span class="mdot"></span>Games<span class="mdot"></span>0→1 MVP<span class="mdot"></span>Design Systems</div>
+    <div class="marquee-item"><span class="mdot"></span>Product Design<span class="mdot"></span>Fintech<span class="mdot"></span>SaaS<span class="mdot"></span>EV<span class="mdot"></span>Enterprise<span class="mdot"></span>Wireframing<span class="mdot"></span>Prototyping<span class="mdot"></span>UI Kit<span class="mdot"></span>Icons<span class="mdot"></span>No-code<span class="mdot"></span>Games<span class="mdot"></span>0→1 MVP<span class="mdot"></span>Design Systems</div>
   </div>
 </div>
 
-<!-- STATS -->
-<div class="stats-section">
-  <div class="stat-item reveal"><div class="stat-num">4<span>+</span></div><div class="stat-label">Years designing fintech and SaaS applications</div></div>
-  <div class="stat-item reveal reveal-d2"><div class="stat-num">500<span>+</span></div><div class="stat-label">Support tickets eliminated in a single month at Fyle</div></div>
-  <div class="stat-item reveal reveal-d3"><div class="stat-num">0<span>→1</span></div><div class="stat-label">Full MVP designed from scratch at Hosakhsam</div></div>
-</div>
-
-<!-- ABOUT -->
-<section class="about-section" id="about-section">
-  <div class="section-label"><span class="sl-num">01</span> About</div>
-  <div class="about-grid">
-    <div class="about-left reveal">
-      <h2 class="about-title">I TELL PEOPLE<br>WHAT TO DO —<br><em>WITHOUT TELLING THEM.</em></h2>
-      <p class="about-body">With over 4+ years of experience designing intuitive, scalable fintech and SaaS applications, I bring a data-driven and empathetic approach to product design. My expertise spans user research, interaction design, prototyping, and end-to-end delivery of user-centric solutions that reduce friction and drive measurable impact.</p>
-      <div class="about-tags">
-        <span class="about-tag">Fintech</span><span class="about-tag">SaaS</span>
-        <span class="about-tag">EV</span><span class="about-tag">Enterprise</span><span class="about-tag">0→1</span>
-      </div>
-      <div class="worked-with">
-        <div class="ww-label">Worked with</div>
-        <div class="ww-logos">
-          <div class="ww-chip">MayaData</div><div class="ww-chip">Fyle</div><div class="ww-chip">Hosakhsam</div>
-        </div>
-      </div>
+<!-- STORY SCROLL -->
+<section class="story-sec" id="story">
+  <div class="story-inner">
+    <div style="font-size:10px;color:rgba(255,255,255,.28);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:12px">
+      <span>My Story</span><span style="flex:1;height:1px;background:rgba(255,255,255,.07)"></span>
+      <span style="font-size:10px;color:rgba(255,255,255,.2)">Scroll →</span>
     </div>
-    <div class="about-right reveal reveal-d2">
-      <div class="pillar-row"><div class="pillar-num">01</div><div><div class="pillar-name">Research Driven</div><div class="pillar-desc">Every decision backed by user research, real data, and genuine insight — not assumptions.</div></div></div>
-      <div class="pillar-row"><div class="pillar-num">02</div><div><div class="pillar-name">End-to-End Delivery</div><div class="pillar-desc">From discovery to handoff — owning the full design process across complex product surfaces.</div></div></div>
-      <div class="pillar-row"><div class="pillar-num">03</div><div><div class="pillar-name">Systems Thinking</div><div class="pillar-desc">Scalable design systems and patterns, not one-off screens that don't talk to each other.</div></div></div>
-      <div class="pillar-row"><div class="pillar-num">04</div><div><div class="pillar-name">No-code Development</div><div class="pillar-desc">Framer, Webflow, rapid prototyping — shipping ideas without waiting for an engineer.</div></div></div>
+    <div class="story-scroll">
+      <div class="scard">
+        <div class="scard-lottie" id="slot-s1">🎓</div>
+        <div class="scard-num">01</div>
+        <div class="scard-t">GRADUATED,<br>PANICKED,<br>OPENED FIGMA</div>
+        <p class="scard-txt">Forgot to eat for 8 hours. Design career began.</p>
+        <span class="scard-chip">Origin Story</span>
+      </div>
+      <div class="scard">
+        <div class="scard-lottie" id="slot-s2">💡</div>
+        <div class="scard-num">02</div>
+        <div class="scard-t">JOINED MAYADATA.<br>LEARNED EVERYTHING.</div>
+        <p class="scard-txt">First real product role. "Just make it better" is never the brief.</p>
+        <span class="scard-chip">First Role</span>
+      </div>
+      <div class="scard">
+        <div class="scard-lottie" id="slot-s3">📊</div>
+        <div class="scard-num">03</div>
+        <div class="scard-t">500 TICKETS →<br>SILENCE.<br>BEST METRIC.</div>
+        <p class="scard-txt">Fyle bulk mileage redesign. Shipped. Tickets disappeared.</p>
+        <span class="scard-chip">Big Win · Fyle</span>
+      </div>
+      <div class="scard">
+        <div class="scard-lottie" id="slot-s4">🛠️</div>
+        <div class="scard-num">04</div>
+        <div class="scard-t">ONE USER.<br>ONE MVP.<br>THREE INVESTORS.</div>
+        <p class="scard-txt">Hosakhsam 0→1 from a single user interview.</p>
+        <span class="scard-chip">0→1 · Hosakhsam</span>
+      </div>
+      <div class="scard">
+        <div class="scard-lottie" id="slot-s5">🎮</div>
+        <div class="scard-num">05</div>
+        <div class="scard-t">BUILT 4 GAMES.<br>SOMEONE DARED ME.<br>WORTH IT.</div>
+        <p class="scard-txt">Canvas API, zero sleep, zero regrets.</p>
+        <span class="scard-chip">Side Quest</span>
+      </div>
+      <div class="scard">
+        <div class="scard-lottie" id="slot-s6">✨</div>
+        <div class="scard-num">06</div>
+        <div class="scard-t">OPEN.<br>AMBITIOUS.<br>CAFFEINATED.</div>
+        <p class="scard-txt">Looking for a team that ships and laughs at standup.</p>
+        <span class="scard-chip">Current · Open to Work</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- SKILLS -->
-<section class="skills-section" id="skills-section">
-  <div class="section-label"><span class="sl-num">02</span> Skills & tools</div>
-  <div class="skills-grid">
-    <div class="skills-col reveal">
-      <div class="sk-col-title">Design disciplines</div>
-      <div class="sk-row" data-p="95"><div class="sk-top"><span class="sk-name">UI / Product Design</span><span class="sk-pct">95</span></div><div class="sk-track"><div class="sk-fill"></div></div></div>
-      <div class="sk-row" data-p="90"><div class="sk-top"><span class="sk-name">UX Research</span><span class="sk-pct">90</span></div><div class="sk-track"><div class="sk-fill"></div></div></div>
-      <div class="sk-row" data-p="88"><div class="sk-top"><span class="sk-name">Wireframing & Prototyping</span><span class="sk-pct">88</span></div><div class="sk-track"><div class="sk-fill"></div></div></div>
-      <div class="sk-row" data-p="85"><div class="sk-top"><span class="sk-name">End-to-End Design</span><span class="sk-pct">85</span></div><div class="sk-track"><div class="sk-fill"></div></div></div>
-      <div class="sk-row" data-p="78"><div class="sk-top"><span class="sk-name">Design Systems</span><span class="sk-pct">78</span></div><div class="sk-track"><div class="sk-fill"></div></div></div>
-      <div class="tools-row"><div class="sk-col-title">Core tools</div><div class="tools"><span class="t-tag">Figma</span><span class="t-tag">Sketch</span><span class="t-tag">ProtoPie</span><span class="t-tag">Framer</span><span class="t-tag">Maze</span><span class="t-tag">Hotjar</span></div></div>
-    </div>
-    <div class="skills-col reveal reveal-d2">
-      <div class="sk-col-title">Adjacent skills</div>
-      <div class="sk-row" data-p="80"><div class="sk-top"><span class="sk-name">No-code Development</span><span class="sk-pct">80</span></div><div class="sk-track"><div class="sk-fill"></div></div></div>
-      <div class="sk-row" data-p="75"><div class="sk-top"><span class="sk-name">Interaction Design</span><span class="sk-pct">75</span></div><div class="sk-track"><div class="sk-fill"></div></div></div>
-      <div class="sk-row" data-p="88"><div class="sk-top"><span class="sk-name">Stakeholder Management</span><span class="sk-pct">88</span></div><div class="sk-track"><div class="sk-fill"></div></div></div>
-      <div class="sk-row" data-p="72"><div class="sk-top"><span class="sk-name">Information Architecture</span><span class="sk-pct">72</span></div><div class="sk-track"><div class="sk-fill"></div></div></div>
-      <div class="sk-row" data-p="70"><div class="sk-top"><span class="sk-name">Usability Testing</span><span class="sk-pct">70</span></div><div class="sk-track"><div class="sk-fill"></div></div></div>
-      <div class="tools-row"><div class="sk-col-title">Workflow</div><div class="tools"><span class="t-tag">Miro</span><span class="t-tag">Notion</span><span class="t-tag">Jira</span><span class="t-tag">Linear</span><span class="t-tag">Lottie</span><span class="t-tag">Webflow</span></div></div>
+<!-- ABOUT -->
+<section class="sec about-sec" id="about">
+  <div class="si">
+    <div class="slbl">About me</div>
+    <div class="about-grid">
+      <div class="about-left">
+        <h2 class="about-h rv">CRAFTING<br>EXPERIENCES<br>COMPANIES <em>SHIP.</em></h2>
+        <div class="about-humor rv">
+          <span>🍞</span>
+          <span>4+ years in fintech &amp; SaaS. I read support tickets for fun, name figma components unreasonably well, and occasionally build games at 2am.</span>
+        </div>
+        <p class="about-bio rv">I turn complex enterprise problems into intuitive experiences — from 0→1 MVP design to untangling legacy SaaS interfaces. I translate between engineers, PMs, and executives without losing the user.</p>
+        <div class="about-vals rv">
+          <div class="av"><div class="av-t">🔍 Research First</div><div class="av-d">Support tickets, Hotjar, 11pm user calls — if it tells me about users, I read it.</div></div>
+          <div class="av"><div class="av-t">⚡ Ships Fast</div><div class="av-d">Reduced 0→1 cycles from months to weeks. Good design at speed is still good design.</div></div>
+          <div class="av"><div class="av-t">🏗️ Systems First</div><div class="av-d">Design systems that scale. Not pretty screens that break in sprint two.</div></div>
+          <div class="av"><div class="av-t">🎮 Builder</div><div class="av-d">Framer, no-code, games — I ship ideas without waiting for an engineer.</div></div>
+        </div>
+        <div class="about-wchips rv">
+          <span class="wlbl">Worked with</span>
+          <span class="wchip">MayaData</span>
+          <span class="wchip">Fyle</span>
+          <span class="wchip">Hosakhsam</span>
+          <span class="wchip">Mercedes-Benz R&D</span>
+          <span class="wchip">Zemetric</span>
+          <span class="wchip">Flits</span>
+        </div>
+      </div>
+
+      <div class="about-right rv d2">
+        <!-- LARGE LOTTIE / JSON SLOT -->
+        <div class="about-lottie-main">
+          <div id="about-lottie-player" style="width:100%;height:100%;position:absolute;inset:0"></div>
+          <div class="about-lottie-overlay" id="alobv">
+            <div class="alo-dashed"></div>
+            <div class="alo-icon">✦</div>
+            <div class="alo-text">Drop your Lottie JSON or<br>illustration asset here<br><br><span style="color:rgba(255,208,47,.6);font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.06em">slot: about-main</span></div>
+          </div>
+        </div>
+        <!-- stat chips -->
+        <div class="about-stats">
+          <div class="astat" style="background:var(--Y)"><div class="astat-n" style="color:var(--N)">4+</div><div class="astat-l" style="color:rgba(5,0,56,.5)">Years</div></div>
+          <div class="astat" style="background:var(--N)"><div class="astat-n" style="color:var(--Y)">500+</div><div class="astat-l" style="color:rgba(255,255,255,.35)">Tickets ↓</div></div>
+          <div class="astat" style="background:var(--N)"><div class="astat-n" style="color:#3CBF71">0→1</div><div class="astat-l" style="color:rgba(255,255,255,.35)">MVPs</div></div>
+          <div class="astat" style="background:var(--B)"><div class="astat-n" style="color:#fff">4</div><div class="astat-l" style="color:rgba(255,255,255,.5)">Games</div></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- WORK -->
-<section class="work-section" id="work-section">
-  <div class="section-label"><span class="sl-num">03</span> Selected work</div>
-  <div class="work-grid">
-    <div class="work-item reveal" onclick="showCS('fyle')">
-      <div class="work-num">01</div>
-      <div class="work-phone-mini">
-        <div style="padding:9px 8px;background:#f8f8fc;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;">
-          <div style="width:20px;height:20px;background:var(--deep-rose);border-radius:5px;display:flex;align-items:center;justify-content:center;color:white;font-size:8px;font-family:'Bebas Neue',sans-serif;">Fy</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--deep-rose);letter-spacing:.04em;">fyle</div>
-          <div style="font-size:5.5px;color:var(--mid);text-align:center;line-height:1.5;margin-top:3px;"><div>→ Bulk mileage</div><div>→ Submit expenses</div><div>→ Track approvals</div></div>
-          <div style="margin-top:7px;width:80%;background:var(--deep-rose);color:white;border-radius:4px;padding:3px;font-size:5.5px;text-align:center;">Add expenses</div>
+<section class="sec work-sec" id="work">
+  <div class="si">
+    <div class="slbl">Case studies</div>
+
+    <div class="yr-g">
+      <div class="yr-l">2024 — 2025</div>
+      <div class="wgrid">
+        <!-- FYLE FEATURED -->
+        <div class="wcard feat rv" onclick="showCS('fyle')">
+          <div class="wc-th">
+            <div class="wph-wrap">
+              <div class="wcard-lottie" id="slot-w1">
+                <div class="wcard-lottie-ph">📊</div>
+                <div class="wcard-lottie-lbl">Fyle UI · slot w1</div>
+              </div>
+            </div>
+          </div>
+          <div class="wc-l">
+            <div class="wc-cat">Case Study · Fintech</div>
+            <h3 class="wc-title">FYLE — BULK MILEAGE EXPENSE REPORT</h3>
+            <p class="wc-desc">Redesigned bulk mileage submission, reducing 500+ complaint tickets in a single month.</p>
+            <div class="wc-tags"><span class="wtag">UX Research</span><span class="wtag">Interaction Design</span><span class="wtag">Fintech</span><span class="wtag">Web App</span></div>
+            <div class="wc-ft">
+              <span class="wc-cta">Read case study →</span>
+              <span class="wc-kpi"><strong>500+</strong> tickets/mo eliminated</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- HOSAKHSAM -->
+        <div class="wcard rv d2" onclick="showCS('hosakhsam')">
+          <div class="wc-l">
+            <div class="wc-cat">Case Study · B2B SaaS · 0→1</div>
+            <h3 class="wc-title">HOSAKHSAM — SERVICE MANAGEMENT SAAS</h3>
+            <p class="wc-desc">Complete 0→1 MVP from one user interview to investor-ready product.</p>
+            <div class="wc-tags"><span class="wtag">0→1 Design</span><span class="wtag">MVP</span><span class="wtag">SaaS</span><span class="wtag">Design System</span></div>
+            <div class="wc-ft">
+              <span class="wc-cta">Read case study →</span>
+              <span class="wc-kpi">Dispatch: <strong>90s</strong> (↓ from 8min)</span>
+            </div>
+          </div>
+          <div class="wc-th">
+            <div class="wph-wrap">
+              <div class="wcard-lottie" id="slot-w2">
+                <div class="wcard-lottie-ph">🛠️</div>
+                <div class="wcard-lottie-lbl">Hosakhsam · slot w2</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="work-cat">Case Study · Fintech · Expense Management</div>
-      <h3 class="work-title">FYLE — BULK MILEAGE EXPENSE REPORT</h3>
-      <p class="work-desc">Reduced 500+ complaint tickets in a month by redesigning the mileage submission flow for field employees.</p>
-      <div class="work-tags"><span class="work-tag">UX Research</span><span class="work-tag">Interaction Design</span><span class="work-tag">Fintech</span></div>
-      <div class="work-arrow">↗</div>
     </div>
 
-    <div class="work-item reveal reveal-d2" onclick="showCS('hosakhsam')">
-      <div class="work-num">02</div>
-      <div class="work-phone-mini">
-        <div style="padding:9px 8px;background:#f3f9f6;height:100%;display:flex;flex-direction:column;gap:4px;justify-content:center;">
-          <div style="font-size:5.5px;color:var(--mid);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;">Service Board</div>
-          <div style="background:white;border:1px solid #e8e8e8;border-radius:3px;padding:3px 4px;font-size:5.5px;display:flex;justify-content:space-between;"><span>Job #1042</span><span style="color:#7cba8a;">● Active</span></div>
-          <div style="background:white;border:1px solid #e8e8e8;border-radius:3px;padding:3px 4px;font-size:5.5px;display:flex;justify-content:space-between;"><span>Job #1043</span><span style="color:var(--deep-rose);">● Critical</span></div>
-          <div style="background:white;border:1px solid #e8e8e8;border-radius:3px;padding:3px 4px;font-size:5.5px;display:flex;justify-content:space-between;"><span>Job #1044</span><span style="color:#888;">● Sched.</span></div>
-          <div style="background:white;border:1px solid #e8e8e8;border-radius:3px;padding:3px 4px;font-size:5.5px;display:flex;justify-content:space-between;"><span>Job #1045</span><span style="color:#7cba8a;">● Done</span></div>
+    <div class="yr-g">
+      <div class="yr-l">2022 — 2023</div>
+      <div class="wgrid">
+        <div class="wcard rv" onclick="showCS('dushu')">
+          <div class="wc-l">
+            <div class="wc-cat">University Project · Mobile App</div>
+            <h3 class="wc-title">DUSHU — DAILY READING HABIT</h3>
+            <p class="wc-desc">Habit-engineering mobile app. 6/8 test users maintained daily reading streak for 14 days.</p>
+            <div class="wc-tags"><span class="wtag">Mobile</span><span class="wtag">Habit Design</span><span class="wtag">Behavioral UX</span></div>
+            <div class="wc-ft">
+              <span class="wc-cta">Read case study →</span>
+              <span class="wc-kpi"><strong>6/8</strong> users kept 14-day streak</span>
+            </div>
+          </div>
+          <div class="wc-th">
+            <div class="wph-wrap">
+              <div class="wcard-lottie" id="slot-w3" style="background:#F0F4FF">
+                <div class="wcard-lottie-ph">📚</div>
+                <div class="wcard-lottie-lbl">Dushu · slot w3</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="work-cat">Case Study · B2B SaaS · 0 → 1</div>
-      <h3 class="work-title">HOSAKHSAM — SERVICE MANAGEMENT SAAS</h3>
-      <p class="work-desc">Complete MVP designed from scratch, starting with just one user and building a full field service dispatch platform.</p>
-      <div class="work-tags"><span class="work-tag">0→1 Design</span><span class="work-tag">MVP</span><span class="work-tag">SaaS</span></div>
-      <div class="work-arrow">↗</div>
-    </div>
-
-    <div class="work-item reveal reveal-d1">
-      <div class="work-num">03</div>
-      <div class="work-phone-mini">
-        <div style="padding:9px 8px;background:#f0f4ff;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;">
-          <div style="font-size:18px;">📚</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:.04em;">Dushu</div>
-          <div style="font-size:5.5px;color:var(--mid);text-align:center;">Daily reading habit</div>
-        </div>
-      </div>
-      <div class="work-cat">University Project · Mobile App</div>
-      <h3 class="work-title">DUSHU — DAILY READING HABIT</h3>
-      <p class="work-desc">A mobile app for building a daily book reading habit through streaks, social nudges, and beautiful reading UI.</p>
-      <div class="work-tags"><span class="work-tag">Mobile App</span><span class="work-tag">Habit Design</span></div>
-      <div class="work-arrow">↗</div>
-    </div>
-
-    <div class="work-item reveal reveal-d3">
-      <div class="work-num">04</div>
-      <div class="work-phone-mini">
-        <div style="padding:9px 8px;background:#fff9f6;height:100%;display:flex;flex-direction:column;gap:4px;justify-content:center;">
-          <div style="height:32px;background:linear-gradient(135deg,var(--blush),var(--rose));border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:5px;color:var(--ink);">UI Kit Preview</div>
-          <div style="height:24px;background:var(--paper);border:1px solid var(--rule);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:5px;color:var(--mid);">Component Library</div>
-          <div style="height:24px;background:var(--paper);border:1px solid var(--rule);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:5px;color:var(--mid);">Icon System</div>
-        </div>
-      </div>
-      <div class="work-cat">Freelance · UI Kit · No-code</div>
-      <h3 class="work-title">FRAMER ANIMATIONS & UI KITS</h3>
-      <p class="work-desc">Grab-and-play UI kits, icon libraries, and interactive Framer animations for designers and developers.</p>
-      <div class="work-tags"><span class="work-tag">Framer</span><span class="work-tag">UI Kit</span><span class="work-tag">No-code</span></div>
-      <div class="work-arrow">↗</div>
     </div>
   </div>
 </section>
 
-<!-- ALL SCREENS -->
-<section class="screens-section">
-  <div class="section-label"><span class="sl-num">04</span> All screens — Fyle onboarding</div>
-  <div class="screens-scroll">
-
-    <div class="screen-card reveal">
-      <div class="screen-card-phone">
-        <div class="screen screen-splash" style="padding:22px 16px 16px;">
-          <div class="status-bar"><span>9:41</span><span>▾▪▪</span></div>
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;">
-            <div class="app-icon-lg">Fy</div>
-            <div class="app-name-lg">fyle</div>
-            <div class="app-tagline">Smart expense management</div>
-            <div class="splash-features" style="margin-top:20px;"><div class="splash-feat"><span class="feat-dot"></span>Submit expenses in bulk</div><div class="splash-feat"><span class="feat-dot"></span>Mileage auto-calc</div><div class="splash-feat"><span class="feat-dot"></span>Approval tracking</div><div class="splash-feat"><span class="feat-dot"></span>Finance-ready reports</div></div>
-            <button class="splash-btn" style="margin-top:20px;">Get started</button>
-          </div>
+<!-- SKILLS -->
+<section class="sec skills-sec" id="skills">
+  <div class="si">
+    <div class="slbl">Skills &amp; tools</div>
+    <div class="sk-grid">
+      <div class="sk-card rv">
+        <div class="sk-lottie" id="slot-sk1"><div class="sk-illo">🎯</div></div>
+        <div class="sk-name">PRODUCT DESIGN</div>
+        <div class="sk-items">
+          <div class="sk-it">End-to-end design (0→1 and iterative)</div>
+          <div class="sk-it">User research & interview facilitation</div>
+          <div class="sk-it">Interaction design & micro-animations</div>
+          <div class="sk-it">Design systems & component libraries</div>
+          <div class="sk-it">Usability testing & iteration</div>
         </div>
       </div>
-      <div class="screen-card-label">Screen 01</div>
-      <div class="screen-card-name">Splash</div>
+      <div class="sk-card rv d1">
+        <div class="sk-lottie" id="slot-sk2"><div class="sk-illo">🏗️</div></div>
+        <div class="sk-name">BUILD &amp; SHIP</div>
+        <div class="sk-items">
+          <div class="sk-it">Framer & Webflow (no-code)</div>
+          <div class="sk-it">HTML/CSS + Vanilla JS</div>
+          <div class="sk-it">Figma prototype → dev handoff</div>
+          <div class="sk-it">Lottie animations & UI kits</div>
+          <div class="sk-it">Icon design & illustration</div>
+        </div>
+      </div>
+      <div class="sk-card rv d2">
+        <div class="sk-lottie" id="slot-sk3"><div class="sk-illo">🤝</div></div>
+        <div class="sk-name">STRATEGY &amp; IMPACT</div>
+        <div class="sk-items">
+          <div class="sk-it">Stakeholder alignment & facilitation</div>
+          <div class="sk-it">Data-driven design decisions</div>
+          <div class="sk-it">Cross-functional team collaboration</div>
+          <div class="sk-it">Product roadmap input</div>
+          <div class="sk-it">Design critique & mentoring</div>
+        </div>
+      </div>
     </div>
-
-    <div class="screen-card reveal reveal-d1">
-      <div class="screen-card-phone">
-        <div class="screen" style="background:white;padding:22px 16px;">
-          <div class="status-bar"><span>9:41</span><span>▾▪▪</span></div>
-          <div style="margin-top:28px;">
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.02em;margin-bottom:4px;">Sign in / up</div>
-            <div style="font-size:10px;color:var(--mid);margin-bottom:28px;">No stress on password</div>
-            <div style="font-size:9px;color:var(--mid);margin-bottom:5px;">Phone</div>
-            <div style="border:1px solid #e0e0e0;border-radius:7px;padding:9px 11px;font-size:10px;display:flex;gap:5px;align-items:center;color:#555;">🇮🇳 +91 <span style="flex:1;border-bottom:1px solid var(--deep-rose);margin-left:3px;"></span></div>
-            <button style="margin-top:16px;width:100%;background:var(--deep-rose);color:white;border:none;border-radius:7px;padding:10px;font-size:10px;font-family:'DM Sans',sans-serif;cursor:pointer;">Submit</button>
-            <div style="font-size:8px;color:#aaa;margin-top:10px;text-align:center;line-height:1.6;">By continuing, you agree to our <span style="color:var(--deep-rose);">terms</span></div>
-          </div>
-        </div>
+    <div class="tools-row-sec rv">
+      <div class="tools-lbl">Toolbox</div>
+      <div class="t-chips">
+        <span class="tchip">Figma</span><span class="tchip">Sketch</span><span class="tchip">ProtoPie</span>
+        <span class="tchip">Framer</span><span class="tchip">Webflow</span><span class="tchip">Maze</span>
+        <span class="tchip">Hotjar</span><span class="tchip">Miro</span><span class="tchip">Notion</span>
+        <span class="tchip">Jira</span><span class="tchip">Linear</span><span class="tchip">Lottie</span>
+        <span class="tchip">HTML/CSS</span><span class="tchip">Vanilla JS</span>
       </div>
-      <div class="screen-card-label">Screen 02</div>
-      <div class="screen-card-name">Phone Entry</div>
-    </div>
-
-    <div class="screen-card reveal reveal-d2">
-      <div class="screen-card-phone">
-        <div class="screen" style="background:white;padding:22px 16px;">
-          <div class="status-bar"><span>9:41</span><span>▾▪▪</span></div>
-          <div style="margin-top:28px;">
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.02em;margin-bottom:4px;">Verify Code</div>
-            <div style="font-size:9px;color:var(--mid);margin-bottom:4px;">6 digit code sent to +91···</div>
-            <div style="font-size:9px;color:var(--deep-rose);margin-bottom:20px;cursor:pointer;">Change number</div>
-            <div style="display:flex;gap:5px;margin-bottom:18px;">
-              <div style="flex:1;height:32px;border:1px solid #e0e0e0;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--mid);">·</div>
-              <div style="flex:1;height:32px;border:1px solid #e0e0e0;border-radius:6px;"></div><div style="flex:1;height:32px;border:1px solid #e0e0e0;border-radius:6px;"></div>
-              <div style="flex:1;height:32px;border:1px solid #e0e0e0;border-radius:6px;"></div><div style="flex:1;height:32px;border:1px solid #e0e0e0;border-radius:6px;"></div><div style="flex:1;height:32px;border:1px solid #e0e0e0;border-radius:6px;"></div>
-            </div>
-            <button style="width:100%;background:var(--deep-rose);color:white;border:none;border-radius:7px;padding:10px;font-size:10px;font-family:'DM Sans',sans-serif;cursor:pointer;">Verify ✓</button>
-            <div style="font-size:9px;color:var(--deep-rose);margin-top:10px;text-align:center;cursor:pointer;">Resend Code</div>
-          </div>
-        </div>
-      </div>
-      <div class="screen-card-label">Screen 03</div>
-      <div class="screen-card-name">OTP Verification</div>
-    </div>
-
-    <div class="screen-card reveal reveal-d3">
-      <div class="screen-card-phone">
-        <div class="screen" style="background:white;padding:22px 16px;">
-          <div class="status-bar"><span>9:41</span><span>▾▪▪</span></div>
-          <div style="margin-top:12px;">
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.02em;margin-bottom:4px;">Setup Profile</div>
-            <div style="font-size:9px;color:var(--mid);margin-bottom:16px;">Business info to get started</div>
-            <div style="display:flex;align-items:center;gap:9px;margin-bottom:16px;">
-              <div style="width:40px;height:40px;border-radius:50%;background:var(--rose-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--deep-rose)" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              </div>
-              <div><div style="font-size:10px;font-weight:500;">Company logo</div><div style="font-size:8px;color:var(--mid);">Upload brand logo</div></div>
-            </div>
-            <div style="font-size:8px;color:var(--mid);margin-bottom:3px;">Full name</div>
-            <div style="border:1px solid #e0e0e0;border-radius:6px;padding:6px 9px;font-size:9px;color:#bbb;margin-bottom:8px;">Enter full name</div>
-            <div style="font-size:8px;color:var(--mid);margin-bottom:3px;">Business name</div>
-            <div style="border:1px solid #e0e0e0;border-radius:6px;padding:6px 9px;font-size:9px;color:#bbb;margin-bottom:12px;">Your business name</div>
-            <button style="width:100%;background:var(--deep-rose);color:white;border:none;border-radius:7px;padding:9px;font-size:10px;font-family:'DM Sans',sans-serif;cursor:pointer;">Create profile</button>
-          </div>
-        </div>
-      </div>
-      <div class="screen-card-label">Screen 04</div>
-      <div class="screen-card-name">Profile Setup</div>
-    </div>
-
-    <div class="screen-card reveal reveal-d4">
-      <div class="screen-card-phone">
-        <div class="screen" style="background:white;padding:22px 16px;">
-          <div class="status-bar"><span>9:41</span><span>▾▪▪</span></div>
-          <div style="margin-top:12px;">
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.02em;margin-bottom:14px;">BULK MILEAGE</div>
-            <div style="background:var(--rose-soft);border-radius:7px;padding:9px 10px;margin-bottom:8px;">
-              <div style="font-size:8px;color:var(--mid);margin-bottom:5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;">Common fields</div>
-              <div style="font-size:7.5px;color:var(--ink);margin-bottom:2px;">Rate: ₹14/km · Project: Sales</div>
-              <div style="font-size:7.5px;color:var(--mid);">Cost Center: Field Ops</div>
-            </div>
-            <div style="border:1px solid #e0e0e0;border-radius:5px;overflow:hidden;">
-              <div style="display:grid;grid-template-columns:1fr 1fr 36px;font-size:6px;color:var(--mid);padding:4px 7px;background:#f9f9f9;border-bottom:1px solid #e0e0e0;"><span>Date</span><span>Route</span><span>km</span></div>
-              <div style="display:grid;grid-template-columns:1fr 1fr 36px;font-size:6.5px;padding:4px 7px;border-bottom:1px solid #f0f0f0;"><span>Mon</span><span>Home→Client</span><span style="color:var(--deep-rose);">42</span></div>
-              <div style="display:grid;grid-template-columns:1fr 1fr 36px;font-size:6.5px;padding:4px 7px;"><span>Tue</span><span>Home→Office</span><span style="color:var(--deep-rose);">18</span></div>
-            </div>
-            <div style="margin-top:7px;display:flex;justify-content:space-between;font-size:7.5px;color:var(--mid);"><span>Total</span><span style="color:var(--ink);font-weight:500;">60km · ₹840</span></div>
-            <button style="margin-top:7px;width:100%;background:var(--deep-rose);color:white;border:none;border-radius:5px;padding:7px;font-size:7.5px;">Submit all</button>
-          </div>
-        </div>
-      </div>
-      <div class="screen-card-label">Screen 05</div>
-      <div class="screen-card-name">Bulk Mileage</div>
     </div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section class="contact-section" id="contact-section">
-  <div class="section-label"><span class="sl-num">05</span> Contact</div>
-  <div class="contact-grid">
-    <div class="contact-left reveal">
-      <h2 class="contact-title">LET'S BUILD<br>SOMETHING <em>GREAT.</em></h2>
-      <p class="contact-body">Open to fintech and SaaS product design roles, freelance projects, and great design conversations.</p>
-      <div class="contact-links">
-        <a href="mailto:shyanipal06@gmail.com" class="contact-link-row"><span class="cl-label">Email</span><span class="cl-value">shyanipal06@gmail.com</span><span class="cl-arrow">↗</span></a>
-        <a href="https://www.linkedin.com/in/shyani-pal/" target="_blank" class="contact-link-row"><span class="cl-label">LinkedIn</span><span class="cl-value">linkedin.com/in/shyani-pal</span><span class="cl-arrow">↗</span></a>
-        <a href="https://dribbble.com/Shyni" target="_blank" class="contact-link-row"><span class="cl-label">Dribbble</span><span class="cl-value">dribbble.com/Shyni</span><span class="cl-arrow">↗</span></a>
+<section class="contact-sec" id="contact">
+  <div class="contact-inner">
+    <h2 class="contact-h rv">LET'S<br>BUILD<br>SOMETHING<br>PEOPLE <em>LOVE.</em></h2>
+    <p class="contact-sub rv">Open to fintech & SaaS product design roles — full-time or contract. Bengaluru or remote.</p>
+    <div class="contact-grid">
+      <div class="rv">
+        <div class="cc-links">
+          <a href="mailto:shyanipal06@gmail.com" class="cc-row"><span class="cc-rl">Email</span><span class="cc-rv">shyanipal06@gmail.com</span><span class="cc-ra">↗</span></a>
+          <a href="https://www.linkedin.com/in/shyani-pal/" target="_blank" class="cc-row"><span class="cc-rl">LinkedIn</span><span class="cc-rv">linkedin.com/in/shyani-pal</span><span class="cc-ra">↗</span></a>
+          <a href="https://dribbble.com/Shyni" target="_blank" class="cc-row"><span class="cc-rl">Dribbble</span><span class="cc-rv">dribbble.com/Shyni</span><span class="cc-ra">↗</span></a>
+          <a href="https://heyshyani.design" target="_blank" class="cc-row"><span class="cc-rl">Portfolio</span><span class="cc-rv">heyshyani.design</span><span class="cc-ra">↗</span></a>
+        </div>
+        <div class="avail-b"><div class="avail-d"></div><span class="avail-t"><strong>Open to opportunities</strong> — fintech &amp; SaaS</span></div>
+        <div class="cc-note">"If you're a recruiter who read this far — hi 👋 you're the good kind. Let's talk."</div>
       </div>
-      <div class="avail-row"><div class="avail-dot"></div><div class="avail-text"><strong>Open to opportunities</strong> — fintech &amp; SaaS product design</div></div>
-    </div>
-    <div class="contact-right reveal reveal-d2">
-      <form class="cf" onsubmit="doSubmit(event)">
-        <div class="cf-title">SAY HELLO</div>
-        <div class="fg"><label class="fl">Name</label><input class="fi" type="text" placeholder="Your name"></div>
-        <div class="fg"><label class="fl">Company</label><input class="fi" type="text" placeholder="Where you work"></div>
-        <div class="fg"><label class="fl">Email</label><input class="fi" type="email" placeholder="you@company.com"></div>
-        <div class="fg"><label class="fl">Message</label><textarea class="fta" rows="4" placeholder="Tell me about your project..."></textarea></div>
-        <button type="submit" class="fsub" id="sb">SEND →</button>
-      </form>
+      <div class="cc-form rv d2">
+        <div class="form-t">SAY HELLO 👋</div>
+        <form onsubmit="doForm(event)">
+          <div class="fg"><label class="fl">Name</label><input class="fi" type="text" placeholder="Your name"></div>
+          <div class="fg"><label class="fl">Company</label><input class="fi" type="text" placeholder="Where you work"></div>
+          <div class="fg"><label class="fl">Email</label><input class="fi" type="email" placeholder="you@company.com"></div>
+          <div class="fg"><label class="fl">Message</label><textarea class="fta" rows="3" placeholder="Tell me about your project..."></textarea></div>
+          <button type="submit" class="fsub" id="fsub">SEND IT →</button>
+        </form>
+      </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="footer-logo">SHYANI <span>PAL</span></div>
-  <div class="footer-right">Product Designer — Bengaluru — 2025</div>
+  <div class="fl-logo">SHYANI <em>PAL</em></div>
+  <div class="fl-ps">Half Baked Folio. Always. 🍞 · © 2025</div>
+  <div class="fl-links">
+    <a href="https://www.linkedin.com/in/shyani-pal/" target="_blank" class="flink">in</a>
+    <a href="https://dribbble.com/Shyni" target="_blank" class="flink">dr</a>
+    <a href="mailto:shyanipal06@gmail.com" class="flink">@</a>
+  </div>
 </footer>
-</div><!-- /page-main -->
+</div><!-- /main -->
 
+<!-- ═══ GAMES PAGE ═══ -->
+<div id="page-games" class="games-page">
+<div class="games-hero">
+  <div class="gh-eye">Side Quests · I Build Games</div>
+  <h1 class="gh-title">GAMES I BUILT<br>WHEN I <em>SHOULD'VE</em><br>BEEN SLEEPING</h1>
+  <p class="gh-sub">Dev friends said designers can't code. Built 4 games in a weekend. Every game mechanic is a micro UX problem.</p>
+  <div class="gh-stats">
+    <div><div class="gh-stat-n">4</div><div class="gh-stat-l">Games</div></div>
+    <div><div class="gh-stat-n">1</div><div class="gh-stat-l">Weekend</div></div>
+    <div><div class="gh-stat-n">0</div><div class="gh-stat-l">Sleep Hours</div></div>
+    <div><div class="gh-stat-n">∞</div><div class="gh-stat-l">Caffeine</div></div>
+  </div>
+</div>
+<div class="games-grid-sec">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="slbl">Playable games — click to play</div>
+    <div class="games-grid">
+      <div class="gc rv"><div class="gc-thumb"><div class="gc-lottie" id="slot-g1" style="font-size:60px;display:flex;align-items:center;justify-content:center">🐍</div><div class="gc-play"><button class="gplay-btn" onclick="openGame('snake')">▶ PLAY</button></div></div><div class="gc-info"><div class="gc-tag">Arcade · Classic</div><div class="gc-name">SNAKE 2000</div><p class="gc-desc">Eat yellow dots. Don't eat yourself. Surprisingly hard to stop.</p><div class="gc-ft"><div class="gc-techs"><span class="gtech">Canvas</span><span class="gtech">JS</span></div><span style="font-size:11px;color:#3CBF71">● Easy</span></div></div></div>
+      <div class="gc rv d1"><div class="gc-thumb"><div class="gc-lottie" id="slot-g2" style="font-size:60px;display:flex;align-items:center;justify-content:center">🧱</div><div class="gc-play"><button class="gplay-btn" onclick="openGame('breakout')">▶ PLAY</button></div></div><div class="gc-info"><div class="gc-tag">Arcade · Physics</div><div class="gc-name">BREAKOUT</div><p class="gc-desc">Break all the bricks. Paddle physics, speed scaling, satisfying crunch.</p><div class="gc-ft"><div class="gc-techs"><span class="gtech">Canvas</span><span class="gtech">Physics</span></div><span style="font-size:11px;color:var(--Y)">● Medium</span></div></div></div>
+      <div class="gc rv d2"><div class="gc-thumb"><div class="gc-lottie" id="slot-g3" style="font-size:60px;display:flex;align-items:center;justify-content:center">🧠</div><div class="gc-play"><button class="gplay-btn" onclick="openGame('memory')">▶ PLAY</button></div></div><div class="gc-info"><div class="gc-tag">Puzzle · Memory</div><div class="gc-name">MEMORY MATCH</div><p class="gc-desc">Flip cards, find pairs. Design emoji theme. UX-polished flip animation.</p><div class="gc-ft"><div class="gc-techs"><span class="gtech">CSS Grid</span><span class="gtech">JS</span></div><span style="font-size:11px;color:#3CBF71">● Easy</span></div></div></div>
+      <div class="gc rv d3"><div class="gc-thumb"><div class="gc-lottie" id="slot-g4" style="font-size:60px;display:flex;align-items:center;justify-content:center">🌌</div><div class="gc-play"><button class="gplay-btn" onclick="openGame('asteroids')">▶ PLAY</button></div></div><div class="gc-info"><div class="gc-tag">Arcade · Space</div><div class="gc-name">ASTEROIDS</div><p class="gc-desc">WASD to move, Space to shoot. Don't die. The most chaotic thing I've built.</p><div class="gc-ft"><div class="gc-techs"><span class="gtech">Canvas</span><span class="gtech">Physics</span></div><span style="font-size:11px;color:#FF6B6B">● Hard</span></div></div></div>
+    </div>
+  </div>
+</div>
+<footer><div class="fl-logo">SHYANI <em>PAL</em></div><div class="fl-ps">Half Baked Folio. Always. 🍞</div><div class="fl-links"><a href="https://www.linkedin.com/in/shyani-pal/" target="_blank" class="flink">in</a><a href="https://dribbble.com/Shyni" target="_blank" class="flink">dr</a><a href="mailto:shyanipal06@gmail.com" class="flink">@</a></div></footer>
+</div>
 
-<!-- ═══════ FYLE CASE STUDY ═══════ -->
+<!-- GAME MODAL -->
+<div class="game-modal" id="gmodal">
+  <div class="gm-wrap">
+    <div class="gm-head"><div class="gm-t" id="gm-t">SNAKE 2000</div><button class="gm-x" onclick="closeGame()">✕</button></div>
+    <div class="gm-cv"><canvas id="gc" width="400" height="300"></canvas></div>
+    <div class="gm-ft"><span class="gm-hint" id="gm-hint">Arrow keys / WASD</span><div class="gm-scw"><span style="font-size:11px;color:var(--mid)">Score:</span><span class="gm-sc" id="gm-sc">0</span><button class="gm-rb" onclick="restartGame()">RESTART</button></div></div>
+  </div>
+</div>
+
+<!-- ═══ CASE STUDIES ═══ -->
+
+<!-- FYLE -->
 <div id="page-fyle" class="cs-page">
-  <div class="cs-nav-bar">
-    <button class="cs-back-btn" onclick="showPage('main')">Back to portfolio</button>
-    <div class="cs-nav-title">FYLE — CASE STUDY</div>
-    <div class="nav-tag">Fintech · Expense Management</div>
-  </div>
-  <div class="cs-hero-section">
-    <div class="cs-hero-inner">
-      <div class="cs-eyebrow">Fintech · Expense Management · Web App</div>
-      <h1 class="cs-hero-title">FYLE — <em>BULK MILEAGE</em><br>EXPENSE REPORT</h1>
-      <p class="cs-hero-sub">How redesigning the bulk mileage submission flow reduced 500+ complaint tickets in a single month — by solving the #1 pain point for field employees at scale.</p>
-    </div>
-  </div>
-  <div class="cs-meta-strip">
-    <div class="cs-meta-item"><div class="cs-meta-label">My Role</div><div class="cs-meta-value">Product Designer</div></div>
-    <div class="cs-meta-item"><div class="cs-meta-label">Domain</div><div class="cs-meta-value">Fintech · B2B SaaS</div></div>
-    <div class="cs-meta-item"><div class="cs-meta-label">Platform</div><div class="cs-meta-value">Web + Mobile</div></div>
-    <div class="cs-meta-item"><div class="cs-meta-label">Key Outcome</div><div class="cs-meta-value">500+ Tickets / Mo</div></div>
-  </div>
-  <div class="cs-section"><div class="cs-metrics"><div class="cs-m"><div class="cs-mn">500<span>+</span></div><div class="cs-ml">Complaint tickets eliminated in Month 1</div></div><div class="cs-m"><div class="cs-mn">~70<span>%</span></div><div class="cs-ml">Reduction in time to submit bulk mileage</div></div><div class="cs-m"><div class="cs-mn">20<span>×</span></div><div class="cs-ml">Mileage entries submittable per session</div></div></div><div class="cs-tags"><span class="cs-badge">UX Research</span><span class="cs-badge">Interaction Design</span><span class="cs-badge">Figma</span><span class="cs-badge">Usability Testing</span><span class="cs-badge">B2B SaaS</span></div></div>
-  <div class="cs-section alt"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">01</span> Context & Background</h2><p class="cs-p">Fyle is an intelligent expense management platform used by thousands of businesses. Field employees — sales reps, delivery agents, healthcare workers — travel daily and need to log many trips at once. The existing experience forced one mileage expense submission at a time.</p><p class="cs-p">For a sales rep with 15 weekly trips, this meant filling the same form 15 times — including <strong>redundant fields like mileage rate, project, and cost center</strong> that never changed between entries.</p><div class="cs-callout"><div class="cs-callout-text">"Our data suggests most users Fyle their mileage expenses within 1–2 days — meaning they batch submissions. Filling expenses one at a time with the same fields was a deeply painful experience."</div><div class="cs-callout-attr">— Fyle Product Team</div></div></div></div>
-  <div class="cs-section"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">02</span> The Problem</h2><p class="cs-p">Support was receiving 500+ complaints per month specifically about mileage submission. Analysis surfaced four core failure points:</p><div class="cs-2col"><div class="cs-col-cell"><h4>REPETITIVE FORMS</h4><p>Every trip required filling all fields from scratch — even when rate, project, and cost center were identical. No way to batch common values.</p></div><div class="cs-col-cell"><h4>TIME-CONSUMING</h4><p>A field employee with 10–15 trips was spending 15–25 minutes on data entry alone — causing month-end backlogs for finance teams.</p></div><div class="cs-col-cell"><h4>NO DUPLICATION</h4><p>Recurring routes had to be manually re-entered each time. No way to duplicate a previous entry or set a recurring trip.</p></div><div class="cs-col-cell"><h4>NO BATCH REVIEW</h4><p>No summary of total distance and amount before submission — leading to frequent errors and resubmissions.</p></div></div></div></div>
-  <div class="cs-section alt"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">03</span> Research & Discovery</h2><div class="cs-steps"><div class="cs-step"><div class="cs-sn">01</div><div class="cs-step-body"><strong>Support Ticket Analysis</strong><p>Reviewed 500+ complaint tickets. Mileage was the #1 category — repetition and time-loss the top complaints by a wide margin.</p></div></div><div class="cs-step"><div class="cs-sn">02</div><div class="cs-step-body"><strong>User Interviews — 8 participants</strong><p>Sales reps and delivery agents. Key insight: 90% batched submissions weekly with 5–20 trips to log at once.</p></div></div><div class="cs-step"><div class="cs-sn">03</div><div class="cs-step-body"><strong>Session Recording Review</strong><p>Hotjar recordings showed rage clicks on "Add Expense" and high abandonment mid-session on multi-entry flows.</p></div></div><div class="cs-step"><div class="cs-sn">04</div><div class="cs-step-body"><strong>Competitive Analysis</strong><p>Reviewed Expensify, Concur, and Zoho. None had a truly streamlined bulk mileage flow — a clear product opportunity.</p></div></div></div></div></div>
-  <div class="cs-section"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">04</span> Design Solution</h2><p class="cs-p">The core insight was to separate <strong>static fields</strong> (common across all trips) from <strong>dynamic fields</strong> (unique per trip). This became the foundation of the Bulk Mileage redesign.</p><div class="cs-img lg"><div class="cs-img-icon">📐</div><div class="cs-img-label">Bulk Mileage Entry UI — Figma Prototype</div></div><div class="cs-2col"><div class="cs-col-cell"><h4>STATIC FIELDS MODAL</h4><p>Users set Mileage Rate, Project, and Cost Center once — applied to all entries. Removed the single biggest source of repetition.</p></div><div class="cs-col-cell"><h4>BATCH ENTRY TABLE</h4><p>Spreadsheet-style table. Fill Date, Purpose, and Route per row. Distance and Amount auto-calculate via Google Maps.</p></div><div class="cs-col-cell"><h4>ROW DUPLICATION</h4><p>One-click duplicate clones all values — perfect for recurring routes. Only date and purpose need changing.</p></div><div class="cs-col-cell"><h4>LIVE SUMMARY FOOTER</h4><p>Sticky footer shows running total of distance and amount as rows are filled — confidence before submission.</p></div></div><div class="cs-callout"><div class="cs-callout-text">Fill what's common once. Fill what's unique per row. Let the system calculate everything else.</div></div></div></div>
-  <div class="cs-section alt"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">05</span> Process</h2><div class="cs-steps"><div class="cs-step"><div class="cs-sn">01</div><div class="cs-step-body"><strong>Discovery & Ticket Analysis</strong><p>Audited 500+ support tickets, interviewed 8 users, reviewed session recordings. Defined problem statement with product team.</p></div></div><div class="cs-step"><div class="cs-sn">02</div><div class="cs-step-body"><strong>Information Architecture</strong><p>Mapped user mental model: "common stuff first, then per-trip details." Designed the static/dynamic separation pattern.</p></div></div><div class="cs-step"><div class="cs-sn">03</div><div class="cs-step-body"><strong>Wireframes & Concept Exploration</strong><p>3 directions — inline form, modal wizard, spreadsheet table. The table won for scanability with 5+ entries.</p></div></div><div class="cs-step"><div class="cs-sn">04</div><div class="cs-step-body"><strong>High-Fidelity Prototype in Figma</strong><p>Interactive prototype: static modal, table rows, duplicate interaction, Google Maps route input, live summary footer.</p></div></div><div class="cs-step"><div class="cs-sn">05</div><div class="cs-step-body"><strong>Usability Testing — 5 users</strong><p>The duplicate row was the most-celebrated feature. Two rounds refined the mobile responsive layout.</p></div></div><div class="cs-step"><div class="cs-sn">06</div><div class="cs-step-body"><strong>Handoff & Dev Collaboration</strong><p>Annotated Figma specs with interactions, edge cases (20-row limit, empty states), and responsive breakpoints.</p></div></div></div></div></div>
-  <div class="cs-section"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">06</span> Results & Impact</h2><div class="cs-metrics"><div class="cs-m"><div class="cs-mn">500<span>+</span></div><div class="cs-ml">Support tickets eliminated within Month 1</div></div><div class="cs-m"><div class="cs-mn">~70<span>%</span></div><div class="cs-ml">Reduction in average submission time</div></div><div class="cs-m"><div class="cs-mn">20<span>×</span></div><div class="cs-ml">Expenses submittable per session (up from 1)</div></div></div><p class="cs-p">Finance teams reported fewer month-end backlogs. The duplicate row became one of the most mentioned features in Fyle's user reviews — called a <strong>"game-changer"</strong> by field employees.</p></div></div>
-  <div class="cs-section alt"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">07</span> Learnings</h2><div class="cs-2col"><div class="cs-col-cell"><h4>TICKETS = GOLD</h4><p>500 complaint tickets were more revealing than any survey. Quantified pain is the fastest path to design priority.</p></div><div class="cs-col-cell"><h4>MENTAL MODEL MAPS</h4><p>The static/dynamic separation only emerged from understanding how users mentally group their trip data.</p></div><div class="cs-col-cell"><h4>MICRO = MACRO</h4><p>One-click row duplication was a 2-hour design decision that became the most loved feature.</p></div><div class="cs-col-cell"><h4>FIELD ≠ DESKTOP</h4><p>Testing with actual field workers revealed mobile-first mattered — leading to a significantly improved mobile layout in v2.</p></div></div></div></div>
-  <footer><div class="footer-logo">SHYANI <span>PAL</span></div><div class="footer-right" style="cursor:pointer;" onclick="showPage('main')">← Back to portfolio</div></footer>
-</div><!-- /fyle -->
+<div class="cs-topbar"><button class="cs-back" onclick="goHome()">Back</button><div class="cs-tb-t">FYLE — CASE STUDY</div><div class="cs-tb-tag">Fintech · 2024</div></div>
+<div class="cs-hero"><div class="cs-hi"><div class="cs-eye">Fintech · Expense Management · Web App</div><h1 class="cs-ht">FYLE — <em>BULK MILEAGE</em><br>EXPENSE REPORT</h1><p class="cs-hs">500 support tickets a month. One design insight — "common once, unique per row" — made them disappear.</p></div></div>
+<div class="cs-meta"><div class="cs-mi"><div class="cs-ml">Role</div><div class="cs-mv">Product Designer</div></div><div class="cs-mi"><div class="cs-ml">Domain</div><div class="cs-mv">Fintech · SaaS</div></div><div class="cs-mi"><div class="cs-ml">Platform</div><div class="cs-mv">Web + Mobile</div></div><div class="cs-mi"><div class="cs-ml">Impact</div><div class="cs-mv">500+ Tickets / Mo</div></div></div>
+<div class="cs-body">
+  <div class="cs-sec wide"><div style="max-width:760px;margin:0 auto"><div class="cs-metrics"><div class="cs-m"><div class="cs-mn">500<em>+</em></div><div class="cs-ml2">Complaint tickets eliminated in Month 1</div></div><div class="cs-m"><div class="cs-mn">~70<em>%</em></div><div class="cs-ml2">Reduction in average submission time</div></div><div class="cs-m"><div class="cs-mn">20<em>×</em></div><div class="cs-ml2">Entries submittable per session</div></div></div><div class="cs-tags"><span class="cs-badge">UX Research</span><span class="cs-badge">Interaction Design</span><span class="cs-badge">Figma</span><span class="cs-badge">Usability Testing</span><span class="cs-badge">Fintech</span></div></div></div>
+  <div class="cs-sec alt"><div class="cs-sh"><span class="cs-sn">01</span><h2 class="cs-st">Background</h2></div><p class="cs-p">Fyle is an expense management platform. Field employees — sales reps, delivery agents — travel daily and log multiple trips at once. The existing flow forced one submission at a time. 15 trips = filling the same form 15 times with <strong>fields that literally never changed</strong>.</p><div class="cs-cq"><div class="cs-cq-t">"Most users batch mileage submissions. Filling the same fields one at a time was causing real pain and real tickets."</div><div class="cs-cq-a">— Fyle Product Team</div></div></div>
+  <div class="cs-sec"><div class="cs-sh"><span class="cs-sn">02</span><h2 class="cs-st">The Problem</h2></div><div class="cs-2col"><div class="cs-cell"><h4>REPETITIVE FORMS</h4><p>Same rate, project, cost center — every single trip. No batching. Pure tedium.</p></div><div class="cs-cell"><h4>TIME-CONSUMING</h4><p>10–15 trips = 15–25 min data entry. Finance backlogs everywhere.</p></div><div class="cs-cell"><h4>NO DUPLICATION</h4><p>Recurring routes re-entered manually every time. No clone option.</p></div><div class="cs-cell"><h4>NO BATCH REVIEW</h4><p>No running total shown. Users discovered errors only after submitting.</p></div></div></div>
+  <div class="cs-sec alt"><div class="cs-sh"><span class="cs-sn">03</span><h2 class="cs-st">Research</h2></div><div class="cs-steps"><div class="cs-step"><div class="cs-snum">01</div><div class="cs-sb"><strong>500+ Ticket Analysis</strong><p>Mileage = #1 complaint category. Repetition and time-loss dominated.</p></div></div><div class="cs-step"><div class="cs-snum">02</div><div class="cs-sb"><strong>8 User Interviews</strong><p>90% batched submissions weekly. Avg 12 trips per session.</p></div></div><div class="cs-step"><div class="cs-snum">03</div><div class="cs-sb"><strong>Hotjar Session Recordings</strong><p>Rage clicks on "Add Expense." High abandonment from screen 3 onwards.</p></div></div><div class="cs-step"><div class="cs-snum">04</div><div class="cs-sb"><strong>Competitive Analysis</strong><p>Expensify, Concur, Zoho — none had a streamlined bulk mileage flow.</p></div></div></div></div>
+  <div class="cs-sec"><div class="cs-sh"><span class="cs-sn">04</span><h2 class="cs-st">Design Solution</h2></div><p class="cs-p">Core insight: <strong>static fields</strong> (same across trips) vs <strong>dynamic fields</strong> (unique per trip). Fill what's common once. Fill what's unique per row. System calculates everything else.</p><div class="cs-img lg"><span>📐</span><span>Bulk Mileage Entry UI — Figma Prototype</span></div><div class="cs-2col"><div class="cs-cell"><h4>STATIC MODAL</h4><p>Rate, Project, Cost Center set once — applied to all rows.</p></div><div class="cs-cell"><h4>BATCH TABLE</h4><p>Date, Purpose, Route per row. Distance + Amount auto-calculate via Maps.</p></div><div class="cs-cell"><h4>ROW DUPLICATION</h4><p>One-click clone any row. Recurring routes covered instantly.</p></div><div class="cs-cell"><h4>LIVE SUMMARY</h4><p>Running total always visible. No more surprise errors before submit.</p></div></div></div>
+  <div class="cs-sec alt"><div class="cs-sh"><span class="cs-sn">05</span><h2 class="cs-st">Process</h2></div><div class="cs-steps"><div class="cs-step"><div class="cs-snum">01</div><div class="cs-sb"><strong>Discovery</strong><p>500+ tickets + 8 interviews + Hotjar + competitor teardown.</p></div></div><div class="cs-step"><div class="cs-snum">02</div><div class="cs-sb"><strong>Mental Model Mapping</strong><p>"Common first, per-trip after." Separation pattern from user mental model, not from existing UI.</p></div></div><div class="cs-step"><div class="cs-snum">03</div><div class="cs-sb"><strong>3 Wireframe Directions</strong><p>Inline form, modal wizard, spreadsheet table. Table won for 5+ entry scanability.</p></div></div><div class="cs-step"><div class="cs-snum">04</div><div class="cs-sb"><strong>Hi-Fi Prototype</strong><p>Static modal → batch table → row duplication → Maps autocomplete → live footer.</p></div></div><div class="cs-step"><div class="cs-snum">05</div><div class="cs-sb"><strong>Usability Testing — 5 users</strong><p>Row duplication: most celebrated feature. "This is why I wanted a desk job." Two mobile iteration rounds.</p></div></div><div class="cs-step"><div class="cs-snum">06</div><div class="cs-sb"><strong>Dev Handoff</strong><p>Annotated Figma: interactions, 20-row limit, empty states, offline fallback, breakpoints.</p></div></div></div></div>
+  <div class="cs-sec"><div class="cs-sh"><span class="cs-sn">06</span><h2 class="cs-st">Impact</h2></div><div class="cs-metrics"><div class="cs-m"><div class="cs-mn">500<em>+</em></div><div class="cs-ml2">Tickets eliminated Month 1</div></div><div class="cs-m"><div class="cs-mn">~70<em>%</em></div><div class="cs-ml2">Submission time reduction</div></div><div class="cs-m"><div class="cs-mn">20<em>×</em></div><div class="cs-ml2">Entries per session (↑ from 1)</div></div></div><p class="cs-p">Finance teams reported fewer backlogs. Row duplication became Fyle's most cited feature in reviews — called <strong>"game-changer"</strong> in 6 independent feedback responses.</p></div>
+  <div class="cs-sec alt"><div class="cs-sh"><span class="cs-sn">07</span><h2 class="cs-st">Learnings</h2></div><div class="cs-2col"><div class="cs-cell"><h4>TICKETS = GOLD</h4><p>500 tickets gave more clarity than any research sprint. Read them before opening Figma.</p></div><div class="cs-cell"><h4>MENTAL MODELS WIN</h4><p>Static/dynamic split emerged from user mental models, not from the existing UI.</p></div><div class="cs-cell"><h4>MICRO → MACRO</h4><p>2 hours designing row duplication became the most loved feature.</p></div><div class="cs-cell"><h4>TEST IN REAL CONTEXT</h4><p>Field workers test on phone in a parking lot. Desk testing misses the real UX entirely.</p></div></div></div>
+</div>
+<div class="cs-foot"><div class="cs-fl">SHYANI <em>PAL</em></div><div class="cs-fb" onclick="goHome()">← Back to portfolio</div></div>
+</div>
 
-
-<!-- ═══════ HOSAKHSAM CASE STUDY ═══════ -->
+<!-- HOSAKHSAM -->
 <div id="page-hosakhsam" class="cs-page">
-  <div class="cs-nav-bar">
-    <button class="cs-back-btn" onclick="showPage('main')">Back to portfolio</button>
-    <div class="cs-nav-title">HOSAKHSAM — CASE STUDY</div>
-    <div class="nav-tag">B2B SaaS · 0 → 1</div>
-  </div>
-  <div class="cs-hero-section">
-    <div class="cs-hero-inner">
-      <div class="cs-eyebrow">B2B SaaS · Service Management · 0 → 1 MVP</div>
-      <h1 class="cs-hero-title">HOSAKHSAM —<br><em>SERVICE MANAGEMENT</em><br>SAAS FROM SCRATCH</h1>
-      <p class="cs-hero-sub">A case study on crafting a complete MVP from scratch, starting with just one key user — and building a full field service dispatch platform from that single source of truth.</p>
-    </div>
-  </div>
-  <div class="cs-meta-strip">
-    <div class="cs-meta-item"><div class="cs-meta-label">My Role</div><div class="cs-meta-value">Lead Designer</div></div>
-    <div class="cs-meta-item"><div class="cs-meta-label">Type</div><div class="cs-meta-value">0 → 1 SaaS MVP</div></div>
-    <div class="cs-meta-item"><div class="cs-meta-label">Domain</div><div class="cs-meta-value">Service Management</div></div>
-    <div class="cs-meta-item"><div class="cs-meta-label">Approach</div><div class="cs-meta-value">1 User → Full Product</div></div>
-  </div>
-  <div class="cs-section"><div class="cs-metrics"><div class="cs-m"><div class="cs-mn">0<span>→1</span></div><div class="cs-ml">Full MVP delivered from scratch</div></div><div class="cs-m"><div class="cs-mn">1<span> user</span></div><div class="cs-ml">Starting point for the entire design process</div></div><div class="cs-m"><div class="cs-mn">90<span>s</span></div><div class="cs-ml">Avg dispatch time, down from 8 minutes</div></div></div><div class="cs-tags"><span class="cs-badge">0→1 Design</span><span class="cs-badge">User Research</span><span class="cs-badge">MVP</span><span class="cs-badge">B2B SaaS</span><span class="cs-badge">Design System</span></div></div>
-  <div class="cs-section alt"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">01</span> Background & Brief</h2><p class="cs-p">Hosakhsam is a service management platform for field service businesses — HVAC maintenance, IT field support, elevator servicing, facility management. I was brought in as lead designer to take the product from <strong>zero to a fully designed, investor-ready MVP</strong> with no existing design, no design system, and no prior user research.</p><div class="cs-callout"><div class="cs-callout-text">Start with one user. Understand them completely. Then build for them — because if it works for your most important user, it'll work for the next ten.</div><div class="cs-callout-attr">— Design philosophy for the project</div></div></div></div>
-  <div class="cs-section"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">02</span> Starting with One User</h2><div class="cs-steps"><div class="cs-step"><div class="cs-sn">01</div><div class="cs-step-body"><strong>5 in-depth interview sessions</strong><p>3+ hours across multiple conversations. Mapped the current process — from WhatsApp messages to Excel sheets to phone calls.</p></div></div><div class="cs-step"><div class="cs-sn">02</div><div class="cs-step-body"><strong>Shadow & observation</strong><p>Observed the user managing a full working day. Found 12 pain points in 8 hours of shadowing.</p></div></div><div class="cs-step"><div class="cs-sn">03</div><div class="cs-step-body"><strong>Current tools audit</strong><p>Every tool used: WhatsApp groups, Google Sheets, phone calls, paper job cards. Time lost to manual updates: ~2 hours/day.</p></div></div><div class="cs-step"><div class="cs-sn">04</div><div class="cs-step-body"><strong>Jobs-to-be-Done mapping</strong><p>Used JTBD framework to reframe each pain point. This became the backlog prioritisation framework for MVP scope.</p></div></div></div></div></div>
-  <div class="cs-section alt"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">03</span> Core Problems</h2><div class="cs-2col"><div class="cs-col-cell"><h4>INVISIBLE STATUS</h4><p>No real-time visibility into technician location or job stage. All updates via calls or WhatsApp — easily lost.</p></div><div class="cs-col-cell"><h4>MANUAL DISPATCH</h4><p>Dispatching required cross-referencing multiple sheets. No skill matching, no availability check, no history.</p></div><div class="cs-col-cell"><h4>PAPER JOB CARDS</h4><p>Technicians carried physical job cards. Completed jobs manually entered into Excel at end of day. Errors and lost cards were frequent.</p></div><div class="cs-col-cell"><h4>NO SERVICE HISTORY</h4><p>No way to look up a customer's service history, previous technician, or recurring issue patterns.</p></div></div></div></div>
-  <div class="cs-section"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">04</span> MVP Scope & Solution</h2><p class="cs-p">The MVP: minimum surface for one operations manager to run their day entirely within Hosakhsam — without falling back to WhatsApp or Excel.</p><div class="cs-img lg"><div class="cs-img-icon">🗂️</div><div class="cs-img-label">Hosakhsam Dashboard — Service Request & Dispatch Overview</div></div><div class="cs-steps"><div class="cs-step"><div class="cs-sn">01</div><div class="cs-step-body"><strong>Service Request Board</strong><p>Kanban-style board — all open jobs by status (New → Assigned → In Progress → Completed). Assess the full day in 10 seconds.</p></div></div><div class="cs-step"><div class="cs-sn">02</div><div class="cs-step-body"><strong>Technician Dispatch Panel</strong><p>Inline assignment — available technicians, current load, location proximity, skill tags. Dispatch time: under 90 seconds.</p></div></div><div class="cs-step"><div class="cs-sn">03</div><div class="cs-step-body"><strong>Mobile Technician App</strong><p>Companion app to receive jobs, update status in real-time, capture sign-offs, attach photos. Replaces physical job cards.</p></div></div><div class="cs-step"><div class="cs-sn">04</div><div class="cs-step-body"><strong>Customer Service History</strong><p>Timeline view per customer — all past jobs, technicians, notes, and resolutions. Built as read-only for MVP scope.</p></div></div></div></div></div>
-  <div class="cs-section alt"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">05</span> Process</h2><div class="cs-steps"><div class="cs-step"><div class="cs-sn">01</div><div class="cs-step-body"><strong>Discovery: Single-User Deep Dive</strong><p>5 interviews + 1 full day of shadowing. Created a 48-hour journey map across digital and physical touchpoints.</p></div></div><div class="cs-step"><div class="cs-sn">02</div><div class="cs-step-body"><strong>Information Architecture</strong><p>IA for web dashboard (manager) and mobile app (technician). Card sorting with 20 users to validate navigation.</p></div></div><div class="cs-step"><div class="cs-sn">03</div><div class="cs-step-body"><strong>Low-fi Wireframes (Miro)</strong><p>16 key screens. Iterated 3 times on the dispatch panel — the most complex and critical interaction in the MVP.</p></div></div><div class="cs-step"><div class="cs-sn">04</div><div class="cs-step-body"><strong>Design System Foundation</strong><p>Lean system: 40 components, not 400. Built for speed and consistency over completeness at MVP stage.</p></div></div><div class="cs-step"><div class="cs-sn">05</div><div class="cs-step-body"><strong>High-Fidelity & Prototype</strong><p>Full interactive prototype in Figma — web and mobile. ProtoPie for technician status-update micro-interactions.</p></div></div><div class="cs-step"><div class="cs-sn">06</div><div class="cs-step-body"><strong>Usability Testing</strong><p>Original user + 2 additional operations managers. Key finding: offline mode needed for mobile — added to v1.1 roadmap.</p></div></div></div></div></div>
-  <div class="cs-section"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">06</span> Outcomes</h2><div class="cs-metrics"><div class="cs-m"><div class="cs-mn">12<span>+</span></div><div class="cs-ml">Core screens delivered for MVP</div></div><div class="cs-m"><div class="cs-mn">90<span>s</span></div><div class="cs-ml">Avg. dispatch time (down from 8 min)</div></div><div class="cs-m"><div class="cs-mn">40<span>+</span></div><div class="cs-ml">Design system components created</div></div></div><div class="cs-callout"><div class="cs-callout-text">The MVP design was presented to 3 investors and 2 pilot customers. All 5 cited the job board clarity and technician mobile experience as the strongest aspects of the product.</div></div></div></div>
-  <div class="cs-section alt"><div class="cs-section-inner"><h2 class="cs-h2"><span class="cs-h2-num">07</span> Learnings</h2><div class="cs-2col"><div class="cs-col-cell"><h4>ONE USER ENOUGH</h4><p>Deep immersion with a single user gave more clarity than any survey. Understand one person — patterns emerge naturally.</p></div><div class="cs-col-cell"><h4>SYSTEMS SAVE TIME</h4><p>Two days to build a lean design system paid off massively — made the last 60% of screens 3× faster to design.</p></div><div class="cs-col-cell"><h4>CONTEXT = CONSTRAINT</h4><p>Field technicians work in conditions most UX designers never consider — sunlight, gloves, time pressure.</p></div><div class="cs-col-cell"><h4>HARDEST FLOW FIRST</h4><p>We iterated the dispatch panel 3 times before the first usability test. Front-load effort on the most complex interaction.</p></div></div></div></div>
-  <footer><div class="footer-logo">SHYANI <span>PAL</span></div><div class="footer-right" style="cursor:pointer;" onclick="showPage('main')">← Back to portfolio</div></footer>
-</div><!-- /hosakhsam -->
+<div class="cs-topbar"><button class="cs-back" onclick="goHome()">Back</button><div class="cs-tb-t">HOSAKHSAM — CASE STUDY</div><div class="cs-tb-tag">SaaS · 0→1 · 2024</div></div>
+<div class="cs-hero"><div class="cs-hi"><div class="cs-eye">B2B SaaS · Service Management · 0→1</div><h1 class="cs-ht">HOSAKHSAM —<br><em>SERVICE MGMT</em><br>SAAS FROM SCRATCH</h1><p class="cs-hs">One user. One day of shadowing. One WhatsApp-and-Excel operation turned investor-ready MVP.</p></div></div>
+<div class="cs-meta"><div class="cs-mi"><div class="cs-ml">Role</div><div class="cs-mv">Lead Designer</div></div><div class="cs-mi"><div class="cs-ml">Type</div><div class="cs-mv">0→1 MVP</div></div><div class="cs-mi"><div class="cs-ml">Domain</div><div class="cs-mv">Service Mgmt</div></div><div class="cs-mi"><div class="cs-ml">Start</div><div class="cs-mv">1 User Interview</div></div></div>
+<div class="cs-body">
+  <div class="cs-sec wide"><div style="max-width:760px;margin:0 auto"><div class="cs-metrics"><div class="cs-m"><div class="cs-mn">0<em>→1</em></div><div class="cs-ml2">Full MVP from zero</div></div><div class="cs-m"><div class="cs-mn">1<em> user</em></div><div class="cs-ml2">Starting point for entire design</div></div><div class="cs-m"><div class="cs-mn">90<em>s</em></div><div class="cs-ml2">Dispatch time (↓ from 8 minutes)</div></div></div><div class="cs-tags"><span class="cs-badge">0→1 Design</span><span class="cs-badge">User Research</span><span class="cs-badge">MVP</span><span class="cs-badge">B2B SaaS</span><span class="cs-badge">Design System</span></div></div></div>
+  <div class="cs-sec alt"><div class="cs-sh"><span class="cs-sn">01</span><h2 class="cs-st">Background</h2></div><p class="cs-p">Field service management platform — HVAC, IT support, elevator servicing. Brought in to go from <strong>zero to investor-ready MVP</strong> with no existing design, no system, no research. Brief: simple and terrifying.</p><div class="cs-cq"><div class="cs-cq-t">Start with one user. Understand them completely. If it solves their problem, it solves it for the next ten.</div></div></div>
+  <div class="cs-sec"><div class="cs-sh"><span class="cs-sn">02</span><h2 class="cs-st">One User Research</h2></div><div class="cs-steps"><div class="cs-step"><div class="cs-snum">01</div><div class="cs-sb"><strong>5 in-depth sessions</strong><p>Full current workflow mapped — WhatsApp, Excel, phone, paper job cards.</p></div></div><div class="cs-step"><div class="cs-snum">02</div><div class="cs-sb"><strong>Full-day observation</strong><p>12 pain points found. 2 hours/day lost to manual status updates.</p></div></div><div class="cs-step"><div class="cs-snum">03</div><div class="cs-sb"><strong>Tools audit</strong><p>3 WhatsApp groups, 2 Google Sheets, 1 phone list, 1 physical job card binder. All of it was the product.</p></div></div><div class="cs-step"><div class="cs-snum">04</div><div class="cs-sb"><strong>JTBD mapping</strong><p>Each pain point reframed as a job. Became the MVP scope prioritisation framework.</p></div></div></div></div>
+  <div class="cs-sec alt"><div class="cs-sh"><span class="cs-sn">03</span><h2 class="cs-st">Core Problems</h2></div><div class="cs-2col"><div class="cs-cell"><h4>INVISIBLE STATUS</h4><p>No real-time job visibility. 40+ status calls per day just to answer "where is job 1042?"</p></div><div class="cs-cell"><h4>MANUAL DISPATCH</h4><p>3 sheets, no skill matching, no availability, no proximity view.</p></div><div class="cs-cell"><h4>PAPER JOB CARDS</h4><p>Physical cards got lost. Excel entries had errors. No history.</p></div><div class="cs-cell"><h4>NO SERVICE HISTORY</h4><p>Every job started fresh. No past context for customer or technician.</p></div></div></div>
+  <div class="cs-sec"><div class="cs-sh"><span class="cs-sn">04</span><h2 class="cs-st">MVP Design</h2></div><div class="cs-img lg"><span>🗂️</span><span>Hosakhsam — Service Board &amp; Dispatch Panel</span></div><div class="cs-steps"><div class="cs-step"><div class="cs-snum">01</div><div class="cs-sb"><strong>Service Request Board (Kanban)</strong><p>All jobs by status — New → Assigned → In Progress → Done. Full day visible in 10 seconds.</p></div></div><div class="cs-step"><div class="cs-snum">02</div><div class="cs-sb"><strong>Dispatch Panel</strong><p>Inline assignment — load, proximity, skill tags. Dispatch: under 90 seconds.</p></div></div><div class="cs-step"><div class="cs-snum">03</div><div class="cs-sb"><strong>Mobile Technician App</strong><p>Two-tap status updates. Designed for gloves + outdoor light. Replaced paper entirely.</p></div></div><div class="cs-step"><div class="cs-snum">04</div><div class="cs-sb"><strong>Service History</strong><p>Timeline per customer. Ops manager called it "the most useful thing in the product."</p></div></div></div></div>
+  <div class="cs-sec alt"><div class="cs-sh"><span class="cs-sn">05</span><h2 class="cs-st">Outcomes</h2></div><div class="cs-metrics"><div class="cs-m"><div class="cs-mn">12<em>+</em></div><div class="cs-ml2">Core screens delivered</div></div><div class="cs-m"><div class="cs-mn">90<em>s</em></div><div class="cs-ml2">Dispatch time (↓ from 8 min)</div></div><div class="cs-m"><div class="cs-mn">40<em>+</em></div><div class="cs-ml2">Design system components</div></div></div><div class="cs-cq"><div class="cs-cq-t">3 investors and 2 pilot customers. All 5 independently cited the job board and mobile app as standout strengths.</div></div></div>
+</div>
+<div class="cs-foot"><div class="cs-fl">SHYANI <em>PAL</em></div><div class="cs-fb" onclick="goHome()">← Back to portfolio</div></div>
+</div>
+
+<!-- DUSHU -->
+<div id="page-dushu" class="cs-page">
+<div class="cs-topbar"><button class="cs-back" onclick="goHome()">Back</button><div class="cs-tb-t">DUSHU — CASE STUDY</div><div class="cs-tb-tag">University · 2022</div></div>
+<div class="cs-hero"><div class="cs-hi"><div class="cs-eye">University Project · Mobile App · Behavioral Design</div><h1 class="cs-ht">DUSHU —<br><em>DAILY READING</em><br>HABIT APP</h1><p class="cs-hs">Existing apps tracked what you read. Dushu makes you actually read. 6/8 test users kept a 14-day streak.</p></div></div>
+<div class="cs-meta"><div class="cs-mi"><div class="cs-ml">Role</div><div class="cs-mv">Solo Designer</div></div><div class="cs-mi"><div class="cs-ml">Type</div><div class="cs-mv">University Project</div></div><div class="cs-mi"><div class="cs-ml">Platform</div><div class="cs-mv">iOS Mobile App</div></div><div class="cs-mi"><div class="cs-ml">Focus</div><div class="cs-mv">Behavioral UX</div></div></div>
+<div class="cs-body">
+  <div class="cs-sec alt"><div class="cs-sh"><span class="cs-sn">01</span><h2 class="cs-st">The Problem</h2></div><p class="cs-p">Most people who say they want to read more don't have a reading problem — they have a <strong>starting problem.</strong> Goodreads is a great library but a poor habit engineer. The brief: make picking up a book feel inevitable, not effortful.</p><div class="cs-cq"><div class="cs-cq-t">Dushu (读书) means "to read" in Mandarin. Simple. Intentional. Just you and a book.</div></div></div>
+  <div class="cs-sec"><div class="cs-sh"><span class="cs-sn">02</span><h2 class="cs-st">Key Design Decisions</h2></div><div class="cs-2col"><div class="cs-cell"><h4>STREAK (Loss Aversion)</h4><p>Losing a 14-day streak hurts more than the reward of maintaining it. Loss aversion is more powerful than gamification.</p></div><div class="cs-cell"><h4>FOCUSED READING TIMER</h4><p>Distraction-free mode. Book cover, timer, silence. No sidebar. No feed. Just read.</p></div><div class="cs-cell"><h4>MICRO-GOALS</h4><p>"Read 10 pages today" beats "read more books." Small goals remove the start paralysis.</p></div><div class="cs-cell"><h4>SOCIAL NUDGES</h4><p>"Priya read a chapter." Not a feed. Just enough accountability without anxiety.</p></div></div><div class="cs-img lg"><span>📱</span><span>Dushu — Home Screen, Reading Timer &amp; Streak View</span></div></div>
+  <div class="cs-sec alt"><div class="cs-sh"><span class="cs-sn">03</span><h2 class="cs-st">Results</h2></div><p class="cs-p">Tested with 8 participants over 2 weeks vs a control group using existing apps. <strong>6/8 Dushu users</strong> maintained daily reading streak. Control group: 1/8. Streak loss aversion was cited by 5 participants as their primary motivation.</p><div class="cs-cq"><div class="cs-cq-t">The biggest win was making breaking the streak feel worse than just reading 10 pages. Loss aversion &gt; every reward system.</div></div></div>
+</div>
+<div class="cs-foot"><div class="cs-fl">SHYANI <em>PAL</em></div><div class="cs-fb" onclick="goHome()">← Back to portfolio</div></div>
+</div>
 
 <script>
-/* cursor */
-const cd=document.getElementById('cd'),cr=document.getElementById('cr');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-(function t(){cd.style.cssText=`left:${mx}px;top:${my}px;`;rx+=(mx-rx)*.15;ry+=(my-ry)*.15;cr.style.cssText=`left:${rx}px;top:${ry}px;`;requestAnimationFrame(t);})();
+/* ═══ CURSOR ═══ */
+const cur=document.getElementById('cur'),curtag=document.getElementById('curtag');
+let cx=window.innerWidth/2,cy=window.innerHeight/2,tx=cx,ty=cy;
+document.addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY});
+(function animCur(){cx+=(tx-cx)*.18;cy+=(ty-cy)*.18;cur.style.transform=`translate(${cx-4}px,${cy-4}px)`;requestAnimationFrame(animCur)})();
 
-/* scroll progress */
-const prog=document.getElementById('prog');
-window.addEventListener('scroll',()=>{prog.style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%';});
-
-/* scroll reveal */
-const ro=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('visible')),{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
-
-/* skill bars */
-const so=new IntersectionObserver(es=>es.forEach(e=>{
-  if(e.isIntersecting){e.target.querySelector('.sk-fill').style.width=e.target.getAttribute('data-p')+'%';so.unobserve(e.target);}
-}),{threshold:.4});
-document.querySelectorAll('.sk-row').forEach(el=>so.observe(el));
-
-/* page switching */
-function showPage(id){
-  document.querySelectorAll('.page,.cs-page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id==='main'?'page-main':'page-'+id).classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
+/* section-aware cursor */
+const sects=[
+  {id:'hero',cl:'ct-hero',tags:['shyani 🎨','half baked folio 🍞','not sleeping 🌙','currently caffeinated ☕','tell people what to do 🔮']},
+  {id:'story',cl:'ct-hero',tags:['origin story 📖','plot twist incoming ⚡','this is getting good 👀']},
+  {id:'about',cl:'ct-about',tags:['she designed this 🎨','figma is open rn 🖥️','reads support tickets 4fun 📊','4+ years of craft 📐']},
+  {id:'work',cl:'ct-work',tags:['500 tickets → 0 📉','shipped. not just presented. 🚀','case study loading... 📂','real work. real impact. 💼']},
+  {id:'skills',cl:'ct-work',tags:['figma? yes ✓','framer? yes ✓','ships fast ⚡','overqualified for boring briefs 😇']},
+  {id:'contact',cl:'ct-contact',tags:['open to work ✅','hire her already 📨','say hello 👋','she reads emails 📬']},
+];
+function updateCursor(){
+  const sy=window.scrollY+window.innerHeight*.45;
+  let matched=sects[0];
+  sects.forEach(s=>{const el=document.getElementById(s.id);if(el&&el.offsetTop<=sy)matched=s});
+  curtag.className=matched.cl;
+  curtag.textContent=matched.tags[Math.floor(Math.random()*matched.tags.length)];
 }
-function showCS(id){showPage(id);}
-
-/* 3D tilt — hero phones */
-document.querySelectorAll('.phone').forEach(phone=>{
-  phone.addEventListener('mousemove',e=>{
-    const r=phone.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
-    const dx=(e.clientX-cx)/(r.width/2),dy=(e.clientY-cy)/(r.height/2);
-    phone.style.transform=`perspective(600px) rotateX(${-dy*10}deg) rotateY(${dx*10}deg) translateY(-10px) scale(1.04)`;
-    phone.style.transition='transform .1s ease';
-    phone.style.boxShadow=`${-dx*12}px ${12+Math.abs(dy)*8}px 40px rgba(0,0,0,0.13),0 2px 8px rgba(201,122,120,.1)`;
-  });
-  phone.addEventListener('mouseleave',()=>{
-    phone.style.transform='perspective(600px) rotateX(0) rotateY(0) translateY(0) scale(1)';
-    phone.style.transition='transform .5s cubic-bezier(.34,1.2,.64,1),box-shadow .5s ease';
-    phone.style.boxShadow='';
-  });
+window.addEventListener('scroll',()=>{updateCursor();clearTimeout(window._ct);window._ct=setTimeout(updateCursor,600)},{ passive:true });
+setInterval(updateCursor,3500);
+curtag.addEventListener('click',()=>{
+  const e=['ok fine i see you 👀','stop clicking me 😅','shyani.exe 💻','hire her pls 📨','¯\\_(ツ)_/¯','...seriously tho 😐'];
+  curtag.textContent=e[Math.floor(Math.random()*e.length)];
 });
 
-/* 3D tilt — screen cards */
-document.querySelectorAll('.screen-card-phone').forEach(card=>{
-  card.addEventListener('mousemove',e=>{
-    const r=card.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
-    const dx=(e.clientX-cx)/(r.width/2),dy=(e.clientY-cy)/(r.height/2);
-    card.style.transform=`perspective(700px) rotateX(${-dy*7}deg) rotateY(${dx*7}deg) translateY(-10px) scale(1.015)`;
-    card.style.transition='transform .08s linear';
-    card.style.boxShadow=`${-dx*10}px ${16+Math.abs(dy)*6}px 48px rgba(0,0,0,0.12)`;
-  });
-  card.addEventListener('mouseleave',()=>{
-    card.style.transform='';
-    card.style.transition='transform .5s cubic-bezier(.34,1.2,.64,1),box-shadow .5s ease';
-    card.style.boxShadow='';
-  });
-});
+/* ═══ PROGRESS ═══ */
+const prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{const h=document.body.scrollHeight-window.innerHeight;prog.style.width=(h>0?window.scrollY/h*100:0)+'%'},{passive:true});
 
-/* tilt work mini phones */
-document.querySelectorAll('.work-phone-mini').forEach(mini=>{
-  const parent=mini.closest('.work-item');
-  parent.addEventListener('mousemove',e=>{
-    const r=mini.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
-    const dx=(e.clientX-cx)/80,dy=(e.clientY-cy)/80;
-    mini.style.transform=`perspective(400px) rotateX(${-dy*5}deg) rotateY(${dx*5}deg) translateY(-4px)`;
-    mini.style.transition='transform .1s linear';
-  });
-  parent.addEventListener('mouseleave',()=>{
-    mini.style.transform='';
-    mini.style.transition='transform .5s cubic-bezier(.34,1.2,.64,1)';
-  });
+/* ═══ GOOEY NAV BLOB ═══ */
+const blob=document.getElementById('navBlob');
+const navLinks=document.querySelectorAll('.nav-link');
+function moveBlob(el){
+  const fni=document.getElementById('fni');
+  const nr=el.getBoundingClientRect(),fr=fni.getBoundingClientRect();
+  blob.style.width=nr.width+'px';
+  blob.style.transform=`translateX(${nr.left-fr.left-8}px)`;
+}
+navLinks.forEach(l=>{
+  l.addEventListener('mouseenter',()=>moveBlob(l));
 });
+document.getElementById('fni').addEventListener('mouseleave',()=>{blob.style.width='0px'});
 
-/* form */
-function doSubmit(e){e.preventDefault();const b=document.getElementById('sb');b.textContent='SENT →';b.style.background='#7cba8a';setTimeout(()=>{b.textContent='SEND →';b.style.background='';},3000);}
+/* ═══ MOBILE NAV ═══ */
+function toggleD(){document.getElementById('drawer').classList.toggle('on')}
+function closeD(){document.getElementById('drawer').classList.remove('on')}
+function ss(id){const el=document.getElementById(id);if(el)setTimeout(()=>el.scrollIntoView({behavior:'smooth'}),80)}
+
+/* ═══ PAGES ═══ */
+function hideAll(){document.querySelectorAll('.page,.cs-page,.games-page').forEach(p=>p.classList.remove('on'))}
+function goHome(){hideAll();document.getElementById('page-main').classList.add('on');window.scrollTo({top:0,behavior:'smooth'})}
+function showCS(id){hideAll();document.getElementById('page-'+id).classList.add('on');window.scrollTo({top:0,behavior:'smooth'})}
+function goGames(){hideAll();document.getElementById('page-games').classList.add('on');window.scrollTo({top:0,behavior:'smooth'})}
+
+/* ═══ SCROLL REVEAL ═══ */
+const ro=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('on')),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+/* ═══ FORM ═══ */
+function doForm(e){e.preventDefault();const b=document.getElementById('fsub');b.textContent='SENT ✓ 🎉';b.style.background='#3CBF71';b.style.color='#fff';setTimeout(()=>{b.textContent='SEND IT →';b.style.background='';b.style.color=''},3000)}
+
+/* ═══ LOTTIE LOADER UTILITY ═══
+   Usage: loadLottie('slot-id', './your-animation.json')
+   All slots are pre-wired and ready for Lottie JSON files.
+   Simply call loadLottie() with the slot ID and your JSON path.
+═══════════════════════════════ */
+function loadLottie(containerId, jsonPath, loop=true, autoplay=true){
+  const container=document.getElementById(containerId);
+  if(!container||!window.lottie){console.warn('Lottie or container not found:',containerId);return}
+  // clear placeholder
+  container.innerHTML='';
+  return lottie.loadAnimation({container,renderer:'svg',loop,autoplay,path:jsonPath});
+}
+/* Example usage (uncomment and replace paths):
+loadLottie('slot-l1','./animations/illustration1.json');
+loadLottie('slot-l2','./animations/process.json');
+loadLottie('slot-r1','./animations/mobile-ui.json');
+loadLottie('about-lottie-player','./animations/about-main.json');
+*/
+
+/* ═══════════════════════════════
+   GAMES ENGINE
+═══════════════════════════════ */
+let curGame=null,gAF=null,gRunning=false;
+const gc=document.getElementById('gc'),gctx=gc.getContext('2d');
+const GW=gc.width,GH=gc.height;
+
+function openGame(n){
+  document.getElementById('gmodal').classList.add('on');curGame=n;
+  document.getElementById('gm-sc').textContent='0';
+  const T={snake:'🐍 SNAKE 2000',breakout:'🧱 BREAKOUT',memory:'🧠 MEMORY MATCH',asteroids:'🌌 ASTEROIDS'};
+  const H={snake:'Arrow keys / WASD',breakout:'← → Arrow keys',memory:'Click cards to match',asteroids:'WASD + Space to shoot'};
+  document.getElementById('gm-t').textContent=T[n]||n;document.getElementById('gm-hint').textContent=H[n]||'';
+  if(gAF)cancelAnimationFrame(gAF);gRunning=false;
+  if(n==='snake')initSnake();else if(n==='breakout')initBreakout();else if(n==='memory')initMemory();else if(n==='asteroids')initAsteroids();
+}
+function closeGame(){document.getElementById('gmodal').classList.remove('on');gRunning=false;if(gAF)cancelAnimationFrame(gAF)}
+function restartGame(){if(curGame)openGame(curGame)}
+
+function dbg(){gctx.fillStyle='#050038';gctx.fillRect(0,0,GW,GH);gctx.fillStyle='rgba(255,255,255,.025)';for(let x=0;x<GW;x+=20)for(let y=0;y<GH;y+=20)gctx.fillRect(x,y,1,1)}
+function govr(sc){gctx.fillStyle='rgba(5,0,56,.85)';gctx.fillRect(0,0,GW,GH);gctx.fillStyle='#FFD02F';gctx.font="bold 30px 'Bebas Neue'";gctx.textAlign='center';gctx.fillText('GAME OVER',GW/2,GH/2-10);gctx.fillStyle='rgba(255,255,255,.5)';gctx.font="14px 'DM Sans'";gctx.fillText(`Score: ${sc}  ·  Press RESTART`,GW/2,GH/2+14)}
+function gwn(m){gctx.fillStyle='rgba(5,0,56,.85)';gctx.fillRect(0,0,GW,GH);gctx.fillStyle='#FFD02F';gctx.font="bold 26px 'Bebas Neue'";gctx.textAlign='center';gctx.fillText(m,GW/2,GH/2)}
+
+/* SNAKE */
+let sn,sd,snd,sf,ss2,sLp;
+function initSnake(){
+  if(sLp)clearInterval(sLp);
+  const SZ=16,cols=Math.floor(GW/SZ),rows=Math.floor(GH/SZ);
+  sn=[{x:Math.floor(cols/2),y:Math.floor(rows/2)},{x:Math.floor(cols/2)-1,y:Math.floor(rows/2)}];
+  sd={x:1,y:0};snd={x:1,y:0};ss2=0;
+  const rFd=()=>{let f;do{f={x:Math.floor(Math.random()*cols),y:Math.floor(Math.random()*rows)}}while(sn.some(s=>s.x===f.x&&s.y===f.y));return f};
+  sf=rFd();
+  sLp=setInterval(()=>{
+    sd=snd;const h={x:sn[0].x+sd.x,y:sn[0].y+sd.y};
+    if(h.x<0||h.x>=cols||h.y<0||h.y>=rows||sn.some(s=>s.x===h.x&&s.y===h.y)){clearInterval(sLp);govr(ss2);return}
+    sn.unshift(h);
+    if(h.x===sf.x&&h.y===sf.y){ss2++;document.getElementById('gm-sc').textContent=ss2;sf=rFd()}else sn.pop();
+    dbg();
+    gctx.fillStyle='#FFD02F';gctx.shadowColor='#FFD02F';gctx.shadowBlur=9;
+    gctx.beginPath();gctx.arc(sf.x*SZ+SZ/2,sf.y*SZ+SZ/2,SZ/2-2,0,Math.PI*2);gctx.fill();gctx.shadowBlur=0;
+    sn.forEach((s,i)=>{gctx.fillStyle=i===0?'#4262FF':`hsl(${220+i*2},65%,${58+i*.4}%)`;gctx.beginPath();gctx.roundRect(s.x*SZ+1,s.y*SZ+1,SZ-2,SZ-2,i===0?5:3);gctx.fill()});
+  },130);
+  const onk=e=>{const m={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0},w:{x:0,y:-1},s:{x:0,y:1},a:{x:-1,y:0},d:{x:1,y:0}};const nd=m[e.key];if(!nd)return;e.preventDefault();if(nd.x!==-sd.x||nd.y!==-sd.y)snd=nd};
+  document.removeEventListener('keydown',window._sk);window._sk=onk;document.addEventListener('keydown',onk);
+}
+/* BREAKOUT */
+let bBl,bPd,bBr,bSc,bOk;
+function initBreakout(){
+  if(gAF)cancelAnimationFrame(gAF);
+  bPd={x:GW/2-40,w:80,h:10,y:GH-18,sp:0};bBl={x:GW/2,y:GH-40,r:7,vx:2.2,vy:-2.8};bSc=0;
+  const rc=4,cc=8,bw=Math.floor((GW-32)/cc)-4,bh=13;bBr=[];
+  for(let r=0;r<rc;r++)for(let c=0;c<cc;c++){const cs=['#FFD02F','#4262FF','#FF6B6B','#50E3C2'];bBr.push({x:16+c*(bw+4),y:26+r*(bh+4),w:bw,h:bh,a:true,c:cs[r%4]})}
+  bOk=true;
+  const kd=e=>{if(e.key==='ArrowLeft')bPd.sp=-5;if(e.key==='ArrowRight')bPd.sp=5};
+  const ku=e=>{if(['ArrowLeft','ArrowRight'].includes(e.key))bPd.sp=0};
+  document.removeEventListener('keydown',window._bk);document.removeEventListener('keyup',window._bku);
+  window._bk=kd;window._bku=ku;document.addEventListener('keydown',kd);document.addEventListener('keyup',ku);
+  const fr=()=>{
+    if(!bOk)return;dbg();
+    bPd.x=Math.max(0,Math.min(GW-bPd.w,bPd.x+bPd.sp));
+    bBl.x+=bBl.vx;bBl.y+=bBl.vy;
+    if(bBl.x-bBl.r<0||bBl.x+bBl.r>GW)bBl.vx*=-1;
+    if(bBl.y-bBl.r<0)bBl.vy*=-1;
+    if(bBl.y+bBl.r>GH){bOk=false;govr(bSc);return}
+    if(bBl.y+bBl.r>bPd.y&&bBl.x>bPd.x&&bBl.x<bPd.x+bPd.w&&bBl.vy>0){bBl.vy*=-1;bBl.vx+=(bBl.x-(bPd.x+bPd.w/2))*.04}
+    bBr.forEach(b=>{if(!b.a)return;if(bBl.x>b.x&&bBl.x<b.x+b.w&&bBl.y>b.y&&bBl.y<b.y+b.h){b.a=false;bBl.vy*=-1;bSc++;document.getElementById('gm-sc').textContent=bSc}});
+    if(bBr.every(b=>!b.a)){bOk=false;gwn('YOU WIN! 🎉');return}
+    bBr.forEach(b=>{if(!b.a)return;gctx.fillStyle=b.c;gctx.beginPath();gctx.roundRect(b.x,b.y,b.w,b.h,3);gctx.fill()});
+    gctx.fillStyle='#4262FF';gctx.beginPath();gctx.roundRect(bPd.x,bPd.y,bPd.w,bPd.h,5);gctx.fill();
+    gctx.fillStyle='#FFD02F';gctx.shadowColor='#FFD02F';gctx.shadowBlur=8;gctx.beginPath();gctx.arc(bBl.x,bBl.y,bBl.r,0,Math.PI*2);gctx.fill();gctx.shadowBlur=0;
+    gAF=requestAnimationFrame(fr);
+  };gAF=requestAnimationFrame(fr);
+}
+/* MEMORY */
+let mC,mF,mSc2,mLk;
+function initMemory(){
+  const em=['🎨','🖌️','✏️','📐','💡','🔍','🚀','⚡'];
+  const pool=[...em,...em].sort(()=>Math.random()-.5);
+  const c2=4,r2=4,cw=Math.floor((GW-28)/(c2)),ch=Math.floor((GH-28)/r2);
+  mC=pool.map((e,i)=>({e,x:14+(i%c2)*cw,y:14+Math.floor(i/c2)*ch,w:cw-6,h:ch-6,f:false,m:false}));
+  mF=[];mSc2=0;mLk=false;
+  const dr=()=>{gctx.clearRect(0,0,GW,GH);dbg();mC.forEach(c=>{if(c.m){gctx.fillStyle='rgba(60,191,113,.15)';gctx.strokeStyle='#3CBF71';gctx.lineWidth=1.5}else if(c.f){gctx.fillStyle='rgba(255,208,47,.1)';gctx.strokeStyle='#FFD02F';gctx.lineWidth=1.5}else{gctx.fillStyle='rgba(66,98,255,.1)';gctx.strokeStyle='rgba(66,98,255,.35)';gctx.lineWidth=1}gctx.beginPath();gctx.roundRect(c.x,c.y,c.w,c.h,7);gctx.fill();gctx.stroke();if(c.f||c.m){gctx.font=`${Math.min(c.w,c.h)*.48}px serif`;gctx.textAlign='center';gctx.textBaseline='middle';gctx.fillStyle='white';gctx.fillText(c.e,c.x+c.w/2,c.y+c.h/2)}else{gctx.font=`${Math.min(c.w,c.h)*.3}px 'Bebas Neue'`;gctx.textAlign='center';gctx.textBaseline='middle';gctx.fillStyle='rgba(255,208,47,.2)';gctx.fillText('?',c.x+c.w/2,c.y+c.h/2)}})};
+  const oc=e=>{if(mLk)return;const rect=gc.getBoundingClientRect(),mx=(e.clientX-rect.left)*(GW/rect.width),my=(e.clientY-rect.top)*(GH/rect.height);const c=mC.find(c=>!c.f&&!c.m&&mx>c.x&&mx<c.x+c.w&&my>c.y&&my<c.y+c.h);if(!c||mF.length>=2)return;c.f=true;mF.push(c);dr();if(mF.length===2){mLk=true;setTimeout(()=>{if(mF[0].e===mF[1].e){mF[0].m=mF[1].m=true;mSc2++;document.getElementById('gm-sc').textContent=mSc2;if(mC.every(c=>c.m)){gwn('YOU WIN! 🧠🎉');return}}else{mF[0].f=mF[1].f=false}mF=[];mLk=false;dr()},700)}};
+  gc.removeEventListener('click',window._mc);window._mc=oc;gc.addEventListener('click',oc);dr();
+}
+/* ASTEROIDS */
+let aSh,aRk,aB,aSc2,aOk;
+function initAsteroids(){
+  if(gAF)cancelAnimationFrame(gAF);
+  aSh={x:GW/2,y:GH/2,ang:0,vx:0,vy:0,a:true};aSc2=0;aB=[];
+  aRk=Array.from({length:5},()=>({x:Math.random()*GW,y:Math.random()*GH,vx:(Math.random()-.5)*1.6,vy:(Math.random()-.5)*1.6,r:22+Math.random()*12,a:true}));
+  const aK={};
+  const akd=e=>{aK[e.key]=true;if(e.key===' '){e.preventDefault();aB.push({x:aSh.x+Math.cos(aSh.ang)*15,y:aSh.y+Math.sin(aSh.ang)*15,vx:Math.cos(aSh.ang)*5,vy:Math.sin(aSh.ang)*5,l:55})}};
+  const aku=e=>{aK[e.key]=false};
+  document.removeEventListener('keydown',window._ak);document.removeEventListener('keyup',window._aku);
+  window._ak=akd;window._aku=aku;document.addEventListener('keydown',akd);document.addEventListener('keyup',aku);
+  aOk=true;
+  const fr=()=>{
+    if(!aOk)return;
+    if(aK['a']||aK['ArrowLeft'])aSh.ang-=.06;if(aK['d']||aK['ArrowRight'])aSh.ang+=.06;
+    if(aK['w']||aK['ArrowUp']){aSh.vx+=Math.cos(aSh.ang)*.16;aSh.vy+=Math.sin(aSh.ang)*.16}
+    aSh.vx*=.97;aSh.vy*=.97;aSh.x=(aSh.x+aSh.vx+GW)%GW;aSh.y=(aSh.y+aSh.vy+GH)%GH;
+    aB.forEach(b=>{b.x=(b.x+b.vx+GW)%GW;b.y=(b.y+b.vy+GH)%GH;b.l--});aB=aB.filter(b=>b.l>0);
+    aRk.forEach(r=>{r.x=(r.x+r.vx+GW)%GW;r.y=(r.y+r.vy+GH)%GH});
+    aB.forEach(b=>aRk.forEach(r=>{if(!r.a)return;if(Math.hypot(b.x-r.x,b.y-r.y)<r.r){r.a=false;b.l=0;aSc2++;document.getElementById('gm-sc').textContent=aSc2}}));
+    aRk=aRk.filter(r=>r.a);
+    if(aRk.length===0)for(let i=0;i<7;i++)aRk.push({x:Math.random()*GW,y:Math.random()*GH,vx:(Math.random()-.5)*2,vy:(Math.random()-.5)*2,r:20+Math.random()*10,a:true});
+    aRk.forEach(r=>{if(Math.hypot(aSh.x-r.x,aSh.y-r.y)<r.r+8&&aSh.a){aSh.a=false;aOk=false;setTimeout(()=>govr(aSc2),50)}});
+    dbg();
+    aRk.forEach(r=>{gctx.strokeStyle='rgba(255,208,47,.4)';gctx.lineWidth=1.5;gctx.beginPath();gctx.arc(r.x,r.y,r.r,0,Math.PI*2);gctx.stroke()});
+    aB.forEach(b=>{gctx.fillStyle='#FFD02F';gctx.shadowColor='#FFD02F';gctx.shadowBlur=6;gctx.beginPath();gctx.arc(b.x,b.y,3,0,Math.PI*2);gctx.fill();gctx.shadowBlur=0});
+    if(aSh.a){gctx.save();gctx.translate(aSh.x,aSh.y);gctx.rotate(aSh.ang);gctx.fillStyle='#4262FF';gctx.strokeStyle='rgba(255,255,255,.5)';gctx.lineWidth=1;gctx.beginPath();gctx.moveTo(14,0);gctx.lineTo(-10,7);gctx.lineTo(-10,-7);gctx.closePath();gctx.fill();gctx.stroke();gctx.restore()}
+    gAF=requestAnimationFrame(fr);
+  };gAF=requestAnimationFrame(fr);
+}
 </script>
 </body>
 </html>
